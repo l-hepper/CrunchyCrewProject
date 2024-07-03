@@ -1,6 +1,7 @@
 package com.sparta.CrunchyCrew;
 
 import com.sparta.CrunchyCrew.Data.DatabaseConnection;
+import com.sparta.CrunchyCrew.Interface.UserInterface;
 import com.sparta.CrunchyCrew.logger.CrunchyLogger;
 import java.sql.Connection;
 
@@ -16,6 +17,8 @@ public class App {
     public static void main(String[] args) {
         CrunchyLogger.configure();
         DatabaseConnection.getInstance().getConnection();
-        
+
+        UserInterface userInterface = new UserInterface();
+        userInterface.start();
     }
 }
