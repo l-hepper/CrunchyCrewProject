@@ -1,11 +1,16 @@
 package com.sparta.CrunchyCrew;
 
+import com.sparta.CrunchyCrew.Data.DatabaseConnection;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class SQLCommunication {
+
+    private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
 
     public void connect() {
 
@@ -39,17 +44,9 @@ public class SQLCommunication {
 
     }
 
-    public static Connection connection;
-    public static Statement statement;
-
-    static {
-        try {
-            connection = DriverManager.getConnection("url", "root", "root");
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static DatabaseConnection connector = DatabaseConnection.getInstance();
+    public static Connection connection = connector.getConnection();
+    public static Statement statement = connector.getStatement();
 
     public ResultSet queryDatabase(Employee employee, String flag) throws SQLException {
 
