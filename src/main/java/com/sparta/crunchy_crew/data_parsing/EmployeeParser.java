@@ -15,7 +15,7 @@ public class EmployeeParser {
     // Return Codes:
     // 0: valid data
     // 1: invalid data
-    public int parseEmployeeData(String employeeEntry) {
+    public static int parseEmployeeData(String employeeEntry) {
         if (employeeEntry == null) return 1;
 
         String[] csvValues = employeeEntry.split(",");
@@ -28,9 +28,10 @@ public class EmployeeParser {
             Character gender = parseGender(csvValues[5]);
             String email = parseEmail(csvValues[6]);
             LocalDate birthday = parseBirthday(csvValues[7]);
-            LocalDate joinDate = parseJoiningDate(csvValues[8]);
+            LocalDate startDate = parseStartDate(csvValues[8], birthday);
             int salary = parseSalary(csvValues[9]);
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
             return 1;
         }
@@ -45,14 +46,16 @@ public class EmployeeParser {
             employeeIds.add(employeeId);
             return employeeId;
         } else {
-            throw new IllegalArgumentException("IllegalArgumentException: employeeId: " + employeeId);
+            LOGGER.fine("IllegalArgumentException: Invalid employeeId: " + employeeId);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid employeeId: " + employeeId);
         }
     }
 
     // TODO: Make private once tested
     public static String parsePrefix(String prefix) throws IllegalArgumentException {
         if (!prefix.endsWith(".") || prefix.length() < 3 || prefix.length() > 5) {
-            throw new IllegalArgumentException("IllegalArgumentException: prefix: " + prefix);
+            LOGGER.fine("IllegalArgumentException: Invalid prefix: " + prefix);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid prefix: " + prefix);
         } else {
             return prefix;
         }
@@ -61,7 +64,8 @@ public class EmployeeParser {
     // TODO: Make private once tested
     public static String parseFirstName(String firstName) throws IllegalArgumentException {
         if (firstName == null || firstName.isEmpty()) {
-            throw new IllegalArgumentException("IllegalArgumentException: firstName: " + firstName);
+            LOGGER.fine("IllegalArgumentException: Invalid firstName: " + firstName);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid firstName: " + firstName);
         }
         return firstName;
     }
@@ -69,7 +73,8 @@ public class EmployeeParser {
     // TODO: Make private once tested
     public static Character parseMiddleInitial(String midInitial) throws IllegalArgumentException {
         if (midInitial == null || midInitial.length() != 1) {
-            throw new IllegalArgumentException("IllegalArgumentException: midInitial: " + midInitial);
+            LOGGER.fine("IllegalArgumentException: Invalid midInitial: " + midInitial);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid midInitial: " + midInitial);
         }
         return midInitial.charAt(0);
     }
@@ -77,7 +82,8 @@ public class EmployeeParser {
     // TODO: Make private once tested
     public static String parseLastName(String lastName) throws IllegalArgumentException {
         if (lastName == null || lastName.isEmpty()) {
-            throw new IllegalArgumentException("IllegalArgumentException: lastName: " + lastName);
+            LOGGER.fine("IllegalArgumentException: Invalid lastName: " + lastName);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid lastName: " + lastName);
         }
         return lastName;
     }
@@ -85,9 +91,11 @@ public class EmployeeParser {
     // TODO: Make private once tested
     public static char parseGender(String gender) throws IllegalArgumentException {
         if (gender == null) {
-            throw new IllegalArgumentException("IllegalArgumentException: gender: null");
+            LOGGER.fine("IllegalArgumentException: Invalid gender: null");
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid gender: null");
         } else if (!gender.equals("M") && !gender.equals("F")) {
-            throw new IllegalArgumentException("IllegalArgumentException: gender: " + gender);
+            LOGGER.fine("IllegalArgumentException: Invalid gender: " + gender);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid gender: " + gender);
         } else {
             return gender.charAt(0);
         }
@@ -98,7 +106,8 @@ public class EmployeeParser {
         if (Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$").matcher(email).matches()) {
             return email;
         } else {
-            throw new IllegalArgumentException("IllegalArgumentException: email: " + email);
+            LOGGER.fine("IllegalArgumentException: Invalid email: " + email);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid email: " + email);
         }
     }
 
@@ -110,32 +119,48 @@ public class EmployeeParser {
             isDateInValidFormat(birthday);
             parsedDate = LocalDate.parse(birthday, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            LOGGER.warning("Invalid Date of Birth format: " + birthday);
-            throw new IllegalArgumentException("IllegalArgumentException: birthday: " + birthday);
+            LOGGER.fine("Invalid Date of Joining format: " + birthday);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday: " + birthday);
         }
-        return parsedDate;
+
+        boolean isAtLeastEighteen = LocalDate.now().minusYears(18).isAfter(parsedDate);
+        boolean isNotDead = parsedDate.plusYears(100).isAfter(LocalDate.now());
+        if (isAtLeastEighteen && isNotDead) {
+            return parsedDate;
+        } else {
+            LOGGER.fine("IllegalArgumentException: birthday: " + birthday);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday: " + birthday);
+        }
     }
 
     // TODO: Make private once tested
-    public static LocalDate parseJoiningDate(String joinDate) throws IllegalArgumentException {
+    public static LocalDate parseStartDate(String startDate, LocalDate birthday) throws IllegalArgumentException {
         LocalDate parsedDate = null;
         try {
-            isDateInValidFormat(joinDate);
-            parsedDate = LocalDate.parse(joinDate, DATE_FORMATTER);
+            isDateInValidFormat(startDate);
+            parsedDate = LocalDate.parse(startDate, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            LOGGER.warning("Invalid Date of Joining format: " + joinDate);
-            throw new IllegalArgumentException("IllegalArgumentException: joinDate: " + joinDate);
+            LOGGER.fine("Invalid Date of Joining format: " + startDate);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate: " + startDate);
         }
-        return parsedDate;
 
+        boolean startedDayOfTurningEighteen = birthday.plusYears(18).isEqual(parsedDate);
+        boolean startedAfterTurningEighteen = birthday.plusYears(18).isBefore(parsedDate);
+        if (startedDayOfTurningEighteen || startedAfterTurningEighteen) {
+            return parsedDate;
+        } else {
+            LOGGER.fine("IllegalArgumentException: startDate: " + startDate);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate: " + startDate);
+        }
     }
 
     // TODO: Make private once tested
-    public static void isDateInValidFormat(String birthday) throws IllegalArgumentException {
-        String[] date = birthday.split("/");
-        boolean dateHasValidCharacters = (date.length == 3) && (date[0].length() == 2 && date[1].length() == 2 && date[2].length() == 4);
+    public static void isDateInValidFormat(String date) throws IllegalArgumentException {
+        String[] dateArray = date.split("/");
+        boolean dateHasValidCharacters = (dateArray.length == 3) && (dateArray[0].length() == 2 && dateArray[1].length() == 2 && dateArray[2].length() == 4);
         if (!dateHasValidCharacters) {
-            throw new IllegalArgumentException("IllegalArgumentException: date: " + birthday);
+            LOGGER.fine("IllegalArgumentException: Invalid date: " + date);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid date: " + date);
         }
     }
 
@@ -144,7 +169,8 @@ public class EmployeeParser {
         if (salary.matches("\\d+") && (!salary.isEmpty() || Integer.parseInt(salary) > 0)) {
             return Integer.parseInt(salary);
         } else {
-            throw new IllegalArgumentException("IllegalArgumentException: prefix: " + salary);
+            LOGGER.fine("IllegalArgumentException: Invalid salary: " + salary);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid salary: " + salary);
         }
     }
 }
