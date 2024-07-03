@@ -3,6 +3,7 @@ package com.sparta.CrunchyCrew.Interface;
 import com.sparta.CrunchyCrew.Employee;
 import com.sparta.CrunchyCrew.EmployeeDAO;
 
+import java.io.Console;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class UserInterface {
 
         boolean exit = false;
         do {
-            System.out.println("\nMAIN MENU\n");
+            System.out.println(ConsoleColours.UNDERLINE + "\nMAIN MENU\n" + ConsoleColours.RESET);
             System.out.println("1: CREATE New Employee record");
             System.out.println("2: SEARCH Records By Employee ID");
             System.out.println("3: UPDATE Employee Record");
@@ -39,7 +40,8 @@ public class UserInterface {
     }
 
     private void createEmployeeMenu() {
-        
+        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE CREATION" + ConsoleColours.RESET);
+
         while (true) {
             System.out.println("Please provide the new employee's details: \n");
 
@@ -94,7 +96,7 @@ public class UserInterface {
     }
 
     private void searchEmployeeMenu() {
-        System.out.println("\nEMPLOYEE SEARCH\n");
+        System.out.println(ConsoleColours.UNDERLINE + "\nEMPLOYEE SEARCH\n"  + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
@@ -107,16 +109,16 @@ public class UserInterface {
 
             Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
             if (searchedEmployee != null) {
-                System.out.println("FOUND");
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
                 // System.out.println(employee)
             } else {
-                System.out.println("NOT FOUND\n");
+                System.out.println(ConsoleColours.RED + "NOT FOUND\n" + ConsoleColours.RESET);
             }
         }
     }
 
     private void updateEmployeeMenu() {
-        System.out.println("EMPLOYEE UPDATE");
+        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
@@ -140,7 +142,7 @@ public class UserInterface {
     }
 
     private void deleteEmployeeMenu() {
-        System.out.println("EMPLOYEE DELETION");
+        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE DELETION" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
