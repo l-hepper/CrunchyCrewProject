@@ -4,6 +4,7 @@ import com.sparta.CrunchyCrew.Employee;
 import com.sparta.CrunchyCrew.EmployeeDAO;
 
 import java.io.Console;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -30,10 +31,13 @@ public class UserInterface {
             String userInput = SCAN.nextLine().trim();
             switch (userInput) {
                 case ("1") -> createEmployeeMenu();
-                case("2") -> searchEmployeeMenu();
-                case("3") -> updateEmployeeMenu();
-                case("4") -> deleteEmployeeMenu();
-                case("Q") -> {System.out.println("Shutting down CrunchyCrew CRM...Goodbye."); exit = true;}
+                case ("2") -> searchEmployeeMenu();
+                case ("3") -> updateEmployeeMenu();
+                case ("4") -> deleteEmployeeMenu();
+                case ("Q") -> {
+                    System.out.println("Shutting down CrunchyCrew CRM...Goodbye.");
+                    exit = true;
+                }
                 default -> System.out.println("Invalid command. Please try again.");
             }
         } while (!exit);
@@ -57,7 +61,7 @@ public class UserInterface {
             System.out.print("Middle Initial (leave blank if no middle name): ");
             String middleInitial = SCAN.nextLine().trim();
 
-            System.out.print("Last Name: " );
+            System.out.print("Last Name: ");
             String lastName = SCAN.nextLine().trim();
 
             System.out.print("Gender (M/F): ");
@@ -81,10 +85,15 @@ public class UserInterface {
             System.out.print("See details above. Submit to database? (Y/N): ");
             String submit = SCAN.nextLine().trim().toLowerCase();
             if (submit.equals("y")) {
-                employeeDAO.createEmployee();
+
+
+                employeeDAO.createEmployee(newEmployee);
                 System.out.print("\nEmployee successfully submitted to database.");
+
             } else {
+
                 System.out.print("Employee not submitted to database.");
+
             }
 
             System.out.print("Add another? (Y/N):");
@@ -96,7 +105,7 @@ public class UserInterface {
     }
 
     private void searchEmployeeMenu() {
-        System.out.println(ConsoleColours.UNDERLINE + "\nEMPLOYEE SEARCH\n"  + ConsoleColours.RESET);
+        System.out.println(ConsoleColours.UNDERLINE + "\nEMPLOYEE SEARCH\n" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
