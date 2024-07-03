@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class EmployeeParser {
     private static final Logger LOGGER = Logger.getLogger(EmployeeParser.class.getName());
@@ -29,7 +30,7 @@ public class EmployeeParser {
             LocalDate birthday = parseBirthday(csvValues[7]);
             LocalDate joinDate = parseJoiningDate(csvValues[8]);
             int salary = parseSalary(csvValues[9]);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
             return 1;
         }
@@ -83,19 +84,18 @@ public class EmployeeParser {
 
     // TODO: Make private once tested
     public static char parseGender(String gender) throws IllegalArgumentException {
-        if (gender.equals("M") || gender.equals("F")) {
-            return gender.charAt(0);
-        } else {
+        if (gender == null) {
+            throw new IllegalArgumentException("IllegalArgumentException: gender: null");
+        } else if (!gender.equals("M") && !gender.equals("F")) {
             throw new IllegalArgumentException("IllegalArgumentException: gender: " + gender);
+        } else {
+            return gender.charAt(0);
         }
     }
 
     // TODO: Make private once tested
     public static String parseEmail(String email) throws IllegalArgumentException {
-        int firstAtSignIndex = email.indexOf('@');
-        int lastAtSignIndex = email.lastIndexOf('@');
-        int periodIndex = email.lastIndexOf('.');
-        if (lastAtSignIndex < periodIndex && firstAtSignIndex == lastAtSignIndex) {
+        if (Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$").matcher(email).matches()) {
             return email;
         } else {
             throw new IllegalArgumentException("IllegalArgumentException: email: " + email);
@@ -105,7 +105,9 @@ public class EmployeeParser {
     // TODO: Make private once tested
     public static LocalDate parseBirthday(String birthday) throws IllegalArgumentException {
         LocalDate parsedDate = null;
+
         try {
+            isDateInValidFormat(birthday);
             parsedDate = LocalDate.parse(birthday, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
             LOGGER.warning("Invalid Date of Birth format: " + birthday);
@@ -118,12 +120,23 @@ public class EmployeeParser {
     public static LocalDate parseJoiningDate(String joinDate) throws IllegalArgumentException {
         LocalDate parsedDate = null;
         try {
+            isDateInValidFormat(joinDate);
             parsedDate = LocalDate.parse(joinDate, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
             LOGGER.warning("Invalid Date of Joining format: " + joinDate);
             throw new IllegalArgumentException("IllegalArgumentException: joinDate: " + joinDate);
         }
         return parsedDate;
+
+    }
+
+    // TODO: Make private once tested
+    public static void isDateInValidFormat(String birthday) throws IllegalArgumentException {
+        String[] date = birthday.split("/");
+        boolean dateHasValidCharacters = (date.length == 3) && (date[0].length() == 2 && date[1].length() == 2 && date[2].length() == 4);
+        if (!dateHasValidCharacters) {
+            throw new IllegalArgumentException("IllegalArgumentException: date: " + birthday);
+        }
     }
 
     // TODO: Make private once tested
