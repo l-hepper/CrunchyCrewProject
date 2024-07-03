@@ -14,7 +14,7 @@ public class DatabaseConnection {
 
     private static final Logger logger = Logger.getLogger(App.class.getName());
 
-    private static DatabaseConnection instance;
+    private static DatabaseConnection instance = new DatabaseConnection();
     private Connection connection;
 
     private DatabaseConnection() {
@@ -37,9 +37,6 @@ public class DatabaseConnection {
     }
 
     public static DatabaseConnection getInstance() {
-        if (instance == null) {
-            instance = new DatabaseConnection();
-        }
         return instance;
     }
 

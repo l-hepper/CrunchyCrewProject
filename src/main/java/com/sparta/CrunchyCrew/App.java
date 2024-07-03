@@ -13,9 +13,8 @@ public class App {
 
     private static final Logger logger = Logger.getLogger(App.class.getName());
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         CrunchyLogger.configure();
-        Connection conn = DatabaseConnection.getInstance().getConnection();
-        System.out.println(conn.getCatalog());
+
     }
 }
