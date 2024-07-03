@@ -1,6 +1,6 @@
-package com.sparta.CrunchyCrew;
+package com.sparta.crunchy_crew;
 
-import com.sparta.CrunchyCrew.logger.CrunchyLogger;
+import com.sparta.crunchy_crew.logger.CrunchyLogger;
 
 import java.util.logging.Logger;
 
