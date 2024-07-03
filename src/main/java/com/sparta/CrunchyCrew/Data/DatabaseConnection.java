@@ -2,11 +2,13 @@ package com.sparta.CrunchyCrew.Data;
 
 import com.sparta.CrunchyCrew.App;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -16,6 +18,7 @@ public class DatabaseConnection {
 
     private static DatabaseConnection instance = new DatabaseConnection();
     private Connection connection;
+    private Statement statement;
 
     private DatabaseConnection() {
 
@@ -34,6 +37,8 @@ public class DatabaseConnection {
                     properties.getProperty("username"),
                     properties.getProperty("password"));
             logger.info("Database connection successfully established");
+            this.statement = connection.createStatement();
+            logger.info("Statement was successfully created");
         } catch (SQLException e) {
             e.printStackTrace();
             logger.severe("Database connection unsuccessful");
@@ -46,5 +51,9 @@ public class DatabaseConnection {
 
     public Connection getConnection() {
         return connection;
+    }
+
+    public Statement getStatement() {
+        return statement;
     }
 }
