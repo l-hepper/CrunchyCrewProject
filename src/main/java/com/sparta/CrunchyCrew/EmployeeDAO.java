@@ -1,6 +1,6 @@
 package com.sparta.CrunchyCrew;
 
-public class employeeDAO {
+public class EmployeeDAO {
     public void createEmployee() {
 
     }

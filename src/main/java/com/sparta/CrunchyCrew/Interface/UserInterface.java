@@ -1,7 +1,7 @@
 package com.sparta.CrunchyCrew.Interface;
 
 import com.sparta.CrunchyCrew.Employee;
-import com.sparta.CrunchyCrew.employeeDAO;
+import com.sparta.CrunchyCrew.EmployeeDAO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    private employeeDAO employeeDAO = new employeeDAO();
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
     private final Scanner SCAN = new Scanner(System.in);
 
     public void start() {
@@ -39,7 +39,7 @@ public class UserInterface {
     }
 
     private void createEmployeeMenu() {
-
+        
         while (true) {
             System.out.println("Please provide the new employee's details: \n");
 
@@ -105,7 +105,7 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with employeeDAO.getEmployee(id);
+            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
             if (searchedEmployee != null) {
                 System.out.println("FOUND");
                 // System.out.println(employee)
@@ -127,7 +127,7 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with employeeDAO.getEmployee(id);
+            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
             if (searchedEmployee != null) {
                 System.out.println("FOUND\n");
                 // System.out.println(employee);
@@ -151,11 +151,11 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with employeeDAO.getEmployee(id);
+            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
             if (searchedEmployee != null) {
                 System.out.println("FOUND\n");
                 // System.out.println(employee);
-                // confirm deletion of employee? if yes employeeDAO.deleteEmployee(employee); if no continue loop
+                // confirm deletion of employee? if yes EmployeeDAO.deleteEmployee(employee); if no continue loop
             } else {
                 System.out.println("NOT FOUND\n");
             }
