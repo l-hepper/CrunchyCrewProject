@@ -15,6 +15,7 @@ public class App {
 
     public static void main(String[] args) {
         CrunchyLogger.configure();
-
+        DatabaseConnection.getInstance().getConnection();
+        
     }
 }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class DatabaseConnection {
 
-    private static final Logger logger = Logger.getLogger(App.class.getName());
+    private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
 
     private static DatabaseConnection instance = new DatabaseConnection();
     private Connection connection;
@@ -22,7 +22,9 @@ public class DatabaseConnection {
         Properties properties = new Properties();
         try {
             properties.load(new FileReader("src/main/resources/mysql.properties"));
+            logger.fine("Properties file loaded successfully");
         } catch (IOException e) {
+            logger.severe("Properties file failed to load successfuly");
             throw new RuntimeException(e);
         }
 
@@ -31,8 +33,10 @@ public class DatabaseConnection {
                     properties.getProperty("url"),
                     properties.getProperty("username"),
                     properties.getProperty("password"));
+            logger.info("Database connection successfully established");
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.severe("Database connection unsuccessful");
         }
     }
 
