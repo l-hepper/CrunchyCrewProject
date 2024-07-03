@@ -2,10 +2,12 @@ package com.sparta.CrunchyCrew.Data;
 
 import com.sparta.CrunchyCrew.App;
 
-import javax.xml.crypto.Data;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class DatabaseConnection {
@@ -16,10 +18,19 @@ public class DatabaseConnection {
     private Connection connection;
 
     private DatabaseConnection() {
-        
+
+        Properties properties = new Properties();
         try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/employees", "root", "ratter123");
-            this.connection.getCatalog();
+            properties.load(new FileReader("src/main/resources/mysql.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            this.connection = DriverManager.getConnection(
+                    properties.getProperty("url"),
+                    properties.getProperty("username"),
+                    properties.getProperty("password"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,10 +46,4 @@ public class DatabaseConnection {
     public Connection getConnection() {
         return connection;
     }
-
-
-
-
-
-
 }
