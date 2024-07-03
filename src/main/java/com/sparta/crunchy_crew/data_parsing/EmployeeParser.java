@@ -16,11 +16,19 @@ public class EmployeeParser {
     // 0: valid data
     // 1: invalid data
     public static int parseEmployeeData(String employeeEntry) {
-        if (employeeEntry == null) return 1;
+        if (employeeEntry == null){
+            LOGGER.warning("Invalid employeeEntry: null");
+            return 1;
+        }
 
         String[] csvValues = employeeEntry.split(",");
+        if (csvValues.length != 10){
+            LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
+            return 1;
+        }
+
         try {
-            String empId = parseEmpId(csvValues[0]);
+            String employeeId = parseEmpId(csvValues[0]);
             String prefix = parsePrefix(csvValues[1]);
             String firstName = parseFirstName(csvValues[2]);
             Character midInitial = parseMiddleInitial(csvValues[3]);
@@ -30,20 +38,20 @@ public class EmployeeParser {
             LocalDate birthday = parseBirthday(csvValues[7]);
             LocalDate startDate = parseStartDate(csvValues[8], birthday);
             int salary = parseSalary(csvValues[9]);
+
+            employeeIds.add(employeeId);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
             return 1;
         }
-
         // TODO: Call DAO to send parsed data to database
         return 0;
     }
 
     // TODO: Make private once tested
     public static String parseEmpId(String employeeId) throws IllegalArgumentException {
-        if (employeeId.matches("\\d+") && employeeId.length() == 6 && !employeeIds.contains(employeeId)) {
-            employeeIds.add(employeeId);
+        if (employeeId != null && employeeId.matches("\\d+") && employeeId.length() == 6 && !employeeIds.contains(employeeId)) {
             return employeeId;
         } else {
             LOGGER.fine("IllegalArgumentException: Invalid employeeId: " + employeeId);
@@ -53,7 +61,7 @@ public class EmployeeParser {
 
     // TODO: Make private once tested
     public static String parsePrefix(String prefix) throws IllegalArgumentException {
-        if (!prefix.endsWith(".") || prefix.length() < 3 || prefix.length() > 5) {
+        if (prefix == null || !prefix.endsWith(".") || prefix.length() < 3 || prefix.length() > 5) {
             LOGGER.fine("IllegalArgumentException: Invalid prefix: " + prefix);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid prefix: " + prefix);
         } else {

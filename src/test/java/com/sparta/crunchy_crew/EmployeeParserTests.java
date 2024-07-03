@@ -2,8 +2,6 @@ package com.sparta.crunchy_crew;
 
 import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -22,7 +20,10 @@ public class EmployeeParserTests {
                 "382342,Drs.,Gillian,T,Winter,F,gilli@n.winter@gmail.cooom,01/17/1960,11/28/1984,103619",
                 "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,1/17/1960,11/28/1984,103619",
                 "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/8/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,-103619"
+                "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,-103619",
+                "382342,,,,,,,,,",
+                "",
+                null
         );
     }
 
