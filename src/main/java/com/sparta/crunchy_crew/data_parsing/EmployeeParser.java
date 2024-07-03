@@ -41,7 +41,7 @@ public class EmployeeParser {
 
             employeeIds.add(employeeId);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            LOGGER.warning(e.getMessage());
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
             return 1;
         }
