@@ -1,7 +1,12 @@
 package com.sparta.CrunchyCrew;
 
+import com.sparta.CrunchyCrew.Data.DatabaseConnection;
 import com.sparta.CrunchyCrew.logger.CrunchyLogger;
+import java.sql.Connection;
 
+import javax.xml.crypto.Data;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class App {
@@ -10,6 +15,7 @@ public class App {
 
     public static void main(String[] args) {
         CrunchyLogger.configure();
+        DatabaseConnection.getInstance().getConnection();
         
     }
 }
