@@ -5,7 +5,6 @@ import com.sparta.crunchy_crew.EmployeeDAO;
 import com.sparta.crunchy_crew.data_parsing.CsvReader;
 import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private final EmployeeDAO employeeDAO = new EmployeeDAO();
     private final Scanner SCAN = new Scanner(System.in);
 
     public void start() {
@@ -227,19 +226,17 @@ public class UserInterface {
 
     public String enterSearchValue(String fieldName) {
         System.out.print("Enter "+ fieldName + ": ");
-        String userInput = SCAN.nextLine();
-        return userInput;
+        return SCAN.nextLine();
     }
 
     private void updateEmployeeMenu() {
         System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
 
-        boolean exit = false;
         while (true) {
             System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
             String id = SCAN.nextLine();
-            if (id.toLowerCase().equals("m")) {
+            if (id.equalsIgnoreCase("m")) {
                 break;
             }
 
@@ -292,8 +289,7 @@ public class UserInterface {
 
     public String enterUpdateValue(String fieldName) {
         System.out.print("Enter new " + fieldName + ": ");
-        String userInput = SCAN.nextLine();
-        return userInput;
+        return SCAN.nextLine();
     }
 
     private void deleteEmployeeMenu() {
@@ -303,7 +299,7 @@ public class UserInterface {
             System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
             String id = SCAN.nextLine();
-            if (id.toLowerCase().equals("m")) {
+            if (id.equalsIgnoreCase("m")) {
                 break;
             }
 
@@ -315,7 +311,7 @@ public class UserInterface {
                 System.out.println(searchedEmployee.printNicely());
                 System.out.print("\nAre you sure you would like to delete this employee? (Y/N): ");
                 String userInput = SCAN.nextLine();
-                if (userInput.toLowerCase().equals("y")) {
+                if (userInput.equalsIgnoreCase("y")) {
                     employeeDAO.deleteEmployee(id);
                     System.out.println(ConsoleColours.GREEN + "Employee deleted."  + ConsoleColours.RESET);
                 }
@@ -334,6 +330,6 @@ public class UserInterface {
         String joinDate = "JOIN DATE";
         String salary = "SALARY";
         //// String.format("%-10s "  + "%-25s " + "%-10s" + "%-30s" + "%-11s" + "%-11s" + "%-12s" + salary, empId, fullName, gender, email, dob, dateOfJoining, salary);
-        System.out.println(String.format("%-10s " + "%-25s" + "%-10s" + "%-30s" + "%-20s" + "%-20s", id, name, gender, email, birthday, joinDate, salary));
+        System.out.println(String.format("%-10s " + "%-25s" + "%-10s" + "%-35s" + "%-20s" + "%-20s" + "%-10s", id, name, gender, email, birthday, joinDate, salary));
     }
 }
