@@ -54,8 +54,8 @@ public class EmployeeParser {
                     Integer.toString(salary));
 
         } catch (IllegalArgumentException e) {
-            LOGGER.warning(e.getMessage());
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
+            LOGGER.info("Reason: " + e.getMessage());
             return Optional.empty();
         }
         return Optional.of(employeeRecord);
@@ -65,14 +65,12 @@ public class EmployeeParser {
         if (employeeId != null && employeeId.matches("\\d+") && employeeId.length() == 6 && !employeeIds.contains(employeeId)) {
             return employeeId;
         } else {
-            LOGGER.fine("IllegalArgumentException: Invalid employeeId: " + employeeId);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid employeeId: " + employeeId);
         }
     }
 
     public static String parsePrefix(String prefix) throws IllegalArgumentException {
         if (prefix == null || !prefix.endsWith(".") || prefix.length() < 3 || prefix.length() > 5) {
-            LOGGER.fine("IllegalArgumentException: Invalid prefix: " + prefix);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid prefix: " + prefix);
         } else {
             return prefix;
@@ -81,7 +79,6 @@ public class EmployeeParser {
 
     public static String parseFirstName(String firstName) throws IllegalArgumentException {
         if (firstName == null || firstName.isEmpty()) {
-            LOGGER.fine("IllegalArgumentException: Invalid firstName: " + firstName);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid firstName: " + firstName);
         }
         return firstName;
@@ -89,7 +86,6 @@ public class EmployeeParser {
 
     public static Character parseMiddleInitial(String midInitial) throws IllegalArgumentException {
         if (midInitial == null || midInitial.length() != 1) {
-            LOGGER.fine("IllegalArgumentException: Invalid midInitial: " + midInitial);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid midInitial: " + midInitial);
         }
         return midInitial.charAt(0);
@@ -97,7 +93,6 @@ public class EmployeeParser {
 
     public static String parseLastName(String lastName) throws IllegalArgumentException {
         if (lastName == null || lastName.isEmpty()) {
-            LOGGER.fine("IllegalArgumentException: Invalid lastName: " + lastName);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid lastName: " + lastName);
         }
         return lastName;
@@ -105,10 +100,8 @@ public class EmployeeParser {
 
     public static char parseGender(String gender) throws IllegalArgumentException {
         if (gender == null) {
-            LOGGER.fine("IllegalArgumentException: Invalid gender: null");
             throw new IllegalArgumentException("IllegalArgumentException: Invalid gender: null");
         } else if (!gender.equals("M") && !gender.equals("F")) {
-            LOGGER.fine("IllegalArgumentException: Invalid gender: " + gender);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid gender: " + gender);
         } else {
             return gender.charAt(0);
@@ -119,7 +112,6 @@ public class EmployeeParser {
         if (Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$").matcher(email).matches()) {
             return email;
         } else {
-            LOGGER.fine("IllegalArgumentException: Invalid email: " + email);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid email: " + email);
         }
     }
@@ -130,8 +122,7 @@ public class EmployeeParser {
         try {
             parsedDate = LocalDate.parse(birthday, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            LOGGER.fine("Invalid Date of Joining format: " + birthday);
-            throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday: " + birthday);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday format: " + birthday);
         }
 
         boolean isAtLeastEighteen = LocalDate.now().minusYears(18).isAfter(parsedDate);
@@ -139,7 +130,6 @@ public class EmployeeParser {
         if (isAtLeastEighteen && isNotDead) {
             return parsedDate;
         } else {
-            LOGGER.fine("IllegalArgumentException: birthday: " + birthday);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday: " + birthday);
         }
     }
@@ -150,8 +140,7 @@ public class EmployeeParser {
         try {
             parsedDate = LocalDate.parse(startDate, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            LOGGER.fine("Invalid Date of Joining format: " + startDate);
-            throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate: " + startDate);
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate format: " + startDate);
         }
 
         boolean startedDayOfTurningEighteen = birthday.plusYears(18).isEqual(parsedDate);
@@ -159,7 +148,6 @@ public class EmployeeParser {
         if (startedDayOfTurningEighteen || startedAfterTurningEighteen) {
             return parsedDate;
         } else {
-            LOGGER.fine("IllegalArgumentException: startDate: " + startDate);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate: " + startDate);
         }
     }
@@ -168,7 +156,6 @@ public class EmployeeParser {
         if (salary.matches("\\d+") && (!salary.isEmpty() || Integer.parseInt(salary) > 0)) {
             return Integer.parseInt(salary);
         } else {
-            LOGGER.fine("IllegalArgumentException: Invalid salary: " + salary);
             throw new IllegalArgumentException("IllegalArgumentException: Invalid salary: " + salary);
         }
     }
