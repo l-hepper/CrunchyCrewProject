@@ -1,7 +1,7 @@
-package com.sparta.CrunchyCrew.Interface;
+package com.sparta.crunchy_crew.Interface;
 
-import com.sparta.CrunchyCrew.Employee;
-import com.sparta.CrunchyCrew.EmployeeDAO;
+import com.sparta.crunchy_crew.Employee;
+import com.sparta.crunchy_crew.EmployeeDAO;
 
 import java.io.Console;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
-package com.sparta.CrunchyCrew;
+package com.sparta.crunchy_crew;
 
-import com.sparta.CrunchyCrew.Data.DatabaseConnection;
+import com.sparta.crunchy_crew.data.DatabaseConnection;
 
 import java.io.FileReader;
 import java.io.IOException;

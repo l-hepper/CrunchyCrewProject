@@ -1,8 +1,5 @@
-package com.sparta.CrunchyCrew.Data;
+package com.sparta.crunchy_crew.data;
 
-import com.sparta.CrunchyCrew.App;
-
-import javax.swing.plaf.nimbus.State;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;

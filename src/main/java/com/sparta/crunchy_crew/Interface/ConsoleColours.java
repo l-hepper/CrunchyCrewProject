@@ -1,4 +1,4 @@
-package com.sparta.CrunchyCrew.Interface;
+package com.sparta.crunchy_crew.Interface;
 
 public class ConsoleColours {
 

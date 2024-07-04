@@ -1,4 +1,4 @@
-package com.sparta.CrunchyCrew;
+package com.sparta.crunchy_crew;
 
 import java.time.LocalDate;
 
