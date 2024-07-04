@@ -1,4 +1,4 @@
-package com.sparta.CrunchyCrew.logger;
+package com.sparta.crunchy_crew.logger;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
