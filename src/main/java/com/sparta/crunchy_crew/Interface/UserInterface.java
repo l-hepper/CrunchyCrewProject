@@ -8,6 +8,7 @@ import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 import java.io.Console;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -173,22 +174,58 @@ public class UserInterface {
     private void searchEmployeeMenu() {
         System.out.println(ConsoleColours.UNDERLINE + "\nEMPLOYEE SEARCH\n" + ConsoleColours.RESET);
 
+        ArrayList<Employee> employeeList = null;
         while (true) {
-            System.out.print("Enter ID ('M' for MAIN MENU): ");
+            System.out.println("0: ID");
+            System.out.println("1: Title");
+            System.out.println("2: First Name");
+            System.out.println("3: Middle Initial");
+            System.out.println("4: Last Name");
+            System.out.println("5: Gender");
+            System.out.println("6: Email");
+            System.out.println("7: Birthday");
+            System.out.println("8: Join Date");
+            System.out.println("9: Salary");
 
-            String id = SCAN.nextLine();
-            if (id.toLowerCase().equals("m")) {
-                break;
+            System.out.print("What would you like to search by?: ");
+            String userInput = SCAN.nextLine();
+
+            switch (userInput) {
+                case "0" -> employeeList = employeeDAO.getEmployee("id", enterSearchValue("ID"));
+                case "1" -> employeeList = employeeDAO.getEmployee("prefix", enterSearchValue("Title"));
+                case "2" -> employeeList = employeeDAO.getEmployee( "first name", enterSearchValue("First Name"));
+                case "3" -> employeeList = employeeDAO.getEmployee("middle initial", enterSearchValue("Middle Initial"));
+                case "4" -> employeeList = employeeDAO.getEmployee("last name", enterSearchValue("Last Name"));
+                case "5" -> employeeList = employeeDAO.getEmployee( "gender", enterSearchValue("Gender"));
+                case "6" -> employeeList = employeeDAO.getEmployee( "email", enterSearchValue("Email"));
+                case "7" -> employeeList = employeeDAO.getEmployee( "dob", enterSearchValue("Date of Birth"));
+                case "8" -> employeeList = employeeDAO.getEmployee( "doj", enterSearchValue("Date of Joining"));
+                case "9" -> employeeList = employeeDAO.getEmployee( "salary", enterSearchValue("Salary"));
             }
 
-            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
-            if (searchedEmployee != null) {
-                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
-                System.out.println("\n" + searchedEmployee + "\n");
+
+            if (!employeeList.isEmpty()) {
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
+                for (Employee emp : employeeList) {
+                    System.out.println(emp);
+                }
+
+                System.out.print("\n" + "Search again? (Y/N):");
+                String another = SCAN.nextLine();
+                if (!another.equals("y".toLowerCase())) {
+                    break;
+                }
+
             } else {
                 System.out.println(ConsoleColours.RED + "NO RECORDS FOUND\n" + ConsoleColours.RESET);
             }
         }
+    }
+
+    public String enterSearchValue(String fieldName) {
+        System.out.print("Enter "+ fieldName + ": ");
+        String userInput = SCAN.nextLine();
+        return userInput;
     }
 
     private void updateEmployeeMenu() {
@@ -203,7 +240,7 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id).getFirst();
             if (searchedEmployee != null) {
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
                 System.out.println(searchedEmployee);
@@ -261,7 +298,7 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id).getFirst();
             if (searchedEmployee != null) {
 
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);

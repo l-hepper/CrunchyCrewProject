@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class EmployeeDAO {
@@ -18,7 +19,7 @@ public class EmployeeDAO {
         sqlCommunication.createRecord(employee);
     }
 
-    public Employee getEmployee(String flag, String value) {
+    public ArrayList<Employee> getEmployee(String flag, String value) {
         logger.info("Entered get employee method in DAO");
         try {
             switch (flag.toLowerCase()) {
@@ -64,7 +65,8 @@ public class EmployeeDAO {
         logger.info("Entered update employee method in DAO");
         Employee employee = null;
         try {
-            employee = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
+            ArrayList<Employee> employeeList = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
+            employee = employeeList.getFirst();
             logger.info("Successfully obtained employee for updating");
             Employee newEmployee = null;
             switch (flag) {
@@ -206,8 +208,8 @@ public class EmployeeDAO {
         logger.info("Entered delete employee method in DAO");
         Employee employee = null;
         try {
-            employee = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
-            sqlCommunication.deleteRecord(employee);
+            ArrayList<Employee> list = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
+            sqlCommunication.deleteRecord(list.getFirst());
             logger.info("Successfully deleted employee record with employee ID: " + employeeID + " from database");
         } catch (SQLException e) {
             logger.severe("SQLException encountered when attempting to delete an employee from the database");
@@ -215,23 +217,51 @@ public class EmployeeDAO {
         }
     }
 
-    private Employee packageEmployeeObject(ResultSet set) throws SQLException {
-        logger.info("Entered package employee object method in DAO");
-        Object[] array = new Object[10];
-        set.next();
-        Employee employee = new Employee(
-                set.getString(1),
-                set.getString(2),
-                set.getString(3),
-                set.getString(4),
-                set.getString(5),
-                set.getString(6),
-                set.getString(7),
-                LocalDate.parse(set.getDate(8).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                LocalDate.parse(set.getDate(9).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                set.getString(10)
-        );
+    private ArrayList<Employee> packageEmployeeObject(ResultSet set) throws SQLException {
+        logger.info("Entered package multiple employee objects method in DAO");
 
-        return employee;
+        ArrayList<Employee> employeeList = new ArrayList<>();
+        while (set.next()) {
+            Object[] array = new Object[10];
+            Employee employee = new Employee(
+                    set.getString(1),
+                    set.getString(2),
+                    set.getString(3),
+                    set.getString(4),
+                    set.getString(5),
+                    set.getString(6),
+                    set.getString(7),
+                    LocalDate.parse(set.getDate(8).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    LocalDate.parse(set.getDate(9).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    set.getString(10)
+            );
+            employeeList.add(employee);
+        }
+
+        return employeeList;
+    }
+
+    private ArrayList<Employee> packagesMultipleEmployeeObjects(ResultSet set) throws SQLException {
+        logger.info("Entered package multiple employee objects method in DAO");
+
+        ArrayList<Employee> employeeList = new ArrayList<>();
+        while (set.next()) {
+            Object[] array = new Object[10];
+            Employee employee = new Employee(
+                    set.getString(1),
+                    set.getString(2),
+                    set.getString(3),
+                    set.getString(4),
+                    set.getString(5),
+                    set.getString(6),
+                    set.getString(7),
+                    LocalDate.parse(set.getDate(8).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    LocalDate.parse(set.getDate(9).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    set.getString(10)
+            );
+            employeeList.add(employee);
+        }
+        System.out.println(employeeList);
+        return employeeList;
     }
 }

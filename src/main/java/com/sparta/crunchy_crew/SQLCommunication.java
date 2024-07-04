@@ -89,7 +89,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by prefix method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE prefix = ?");
-            preparedStatement.setString(1, "'" + prefix + "'");
+            preparedStatement.setString(1, prefix);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -104,7 +104,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by first name method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE first_name = ?");
-            preparedStatement.setString(1, "'" + firstName + "'");
+            preparedStatement.setString(1, firstName);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -119,7 +119,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by middle initial method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE middle_initial = ?");
-            preparedStatement.setString(1, "'" + middleInitial + "'");
+            preparedStatement.setString(1, middleInitial);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -134,7 +134,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by last name method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE last_name = ?");
-            preparedStatement.setString(1, "'" + lastName + "'");
+            preparedStatement.setString(1, lastName);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -149,7 +149,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by gender method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE gender = ?");
-            preparedStatement.setString(1, "'" + gender + "'");
+            preparedStatement.setString(1, gender);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -164,7 +164,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by email method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE email = ?");
-            preparedStatement.setString(1, "'" + email + "'");
+            preparedStatement.setString(1, email);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -179,7 +179,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by date of birth method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE date_of_birth = ?");
-            preparedStatement.setString(1, "'" + dob + "'");
+            preparedStatement.setString(1, dob);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -194,7 +194,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by date of joining method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE date_of_joining = ?");
-            preparedStatement.setString(1, "'" + doj + "'");
+            preparedStatement.setString(1, doj);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -209,7 +209,7 @@ public class SQLCommunication {
         logger.info("Entered get employee by salary method in SQLCommunication");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE salary = ?");
-            preparedStatement.setString(1, "'" + salary + "'");
+            preparedStatement.setString(1, salary);
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
