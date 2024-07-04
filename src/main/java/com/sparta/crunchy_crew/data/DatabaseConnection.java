@@ -2,10 +2,7 @@ package com.sparta.crunchy_crew.data;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -16,6 +13,7 @@ public class DatabaseConnection {
     private static DatabaseConnection instance = new DatabaseConnection();
     private Connection connection;
     private Statement statement;
+    private PreparedStatement preparedStatement;
 
     private DatabaseConnection() {
 
@@ -35,6 +33,7 @@ public class DatabaseConnection {
                     properties.getProperty("password"));
             logger.info("Database connection successfully established");
             this.statement = connection.createStatement();
+            this.preparedStatement = connection.prepareStatement("INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); // add more here
             logger.info("Statement was successfully created");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,5 +51,9 @@ public class DatabaseConnection {
 
     public Statement getStatement() {
         return statement;
+    }
+
+    public PreparedStatement getPreparedStatement() {
+        return preparedStatement;
     }
 }

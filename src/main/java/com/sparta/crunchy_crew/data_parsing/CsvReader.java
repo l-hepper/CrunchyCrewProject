@@ -21,10 +21,13 @@ public class CsvReader {
             while ((employeeEntry = fileReader.readLine()) != null) {
                 Optional<Employee> entry = EmployeeParser.parseEmployeeData(employeeEntry);
                 if (entry.isPresent()) {
-                    if (dataAccessObject != null) dataAccessObject.createEmployee(entry.get());
+                    if (dataAccessObject != null) dataAccessObject.addToBatchStatement(entry.get());
                 } else {
                     corruptEntryCounter++;
                 }
+            }
+            if (dataAccessObject != null) {
+                dataAccessObject.createEmployee();
             }
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());

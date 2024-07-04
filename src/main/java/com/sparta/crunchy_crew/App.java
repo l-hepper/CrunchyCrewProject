@@ -20,8 +20,6 @@ public class App {
 //        uncomment to load in data from CSV
         CsvReader.readCsvFile(employeeDAO);
 
-
-
         UserInterface userInterface = new UserInterface();
         userInterface.start();
     }
