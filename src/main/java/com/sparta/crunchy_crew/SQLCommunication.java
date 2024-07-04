@@ -40,16 +40,16 @@ public class SQLCommunication {
 
     public void updateRecord(Employee employee) {
         try {
-            statement.executeQuery("UPDATE employees SET prefix = '" +
+            statement.executeUpdate("UPDATE employees SET prefix = '" +
             employee.prefix() + "', first_name = '" +
             employee.firstName() + "', middle_initial = '" +
             employee.middleInitial() + "', last_name = '" +
             employee.lastName() + "', gender = '" +
             employee.gender() + "', email = '" +
-            employee.email() + "', dob = '" +
-            employee.dob() + "', doj = '" +
+            employee.email() + "', date_of_birth = '" +
+            employee.dob() + "', date_of_joining = '" +
             employee.dateOfJoining() + "', salary = '" +
-            employee.salary() + "' WHERE empID = " +
+            employee.salary() + "' WHERE id = " +
             employee.empId());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class SQLCommunication {
 
     public void deleteRecord(Employee employee) {
         try {
-            statement.executeUpdate("DELETE FROM employees WHERE ID = '" + employee.empId() + "'");
+            statement.executeUpdate("DELETE FROM employees WHERE id = '" + employee.empId() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,7 +66,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeeByID(String employeeID) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE id = ?");
             preparedStatement.setString(1, employeeID);
             return preparedStatement.executeQuery();
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeesByFirstName(String firstName) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE firstName = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE first_name = ?");
             preparedStatement.setString(1, "'" + firstName + "'");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -102,7 +102,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeesByMiddleInitial(String middleInitial) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE middleInitial = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE middle_initial = ?");
             preparedStatement.setString(1, "'" + middleInitial + "'");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -114,7 +114,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeesByLastName(String lastName) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE lastName = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE last_name = ?");
             preparedStatement.setString(1, "'" + lastName + "'");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -150,7 +150,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeesByDob(String dob) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE dob = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE date_of_birth = ?");
             preparedStatement.setString(1, "'" + dob + "'");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -162,7 +162,7 @@ public class SQLCommunication {
 
     public ResultSet getEmployeesByDoj(String doj) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE doj = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE date_of_joining = ?");
             preparedStatement.setString(1, "'" + doj + "'");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {

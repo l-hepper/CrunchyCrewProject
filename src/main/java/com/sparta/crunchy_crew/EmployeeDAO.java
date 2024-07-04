@@ -66,6 +66,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "first name":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -78,6 +79,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "middle name":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -90,6 +92,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "last name":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -102,6 +105,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "gender":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -114,6 +118,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "email":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -126,6 +131,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "dob":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -134,10 +140,11 @@ public class EmployeeDAO {
                             employee.lastName(),
                             employee.gender(),
                             employee.email(),
-                            LocalDate.parse(newValue),
+                            LocalDate.parse(newValue, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]")),
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "doj":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -147,9 +154,10 @@ public class EmployeeDAO {
                             employee.gender(),
                             employee.email(),
                             employee.dob(),
-                            LocalDate.parse(newValue),
+                            LocalDate.parse(newValue, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]")),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
                 case "salary":
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
@@ -162,6 +170,7 @@ public class EmployeeDAO {
                             employee.dateOfJoining(),
                             newValue);
                     sqlCommunication.updateRecord(newEmployee);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();

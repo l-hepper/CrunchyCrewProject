@@ -192,33 +192,66 @@ public class UserInterface {
     }
 
     private void updateEmployeeMenu() {
-        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
+        System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
-            System.out.print("Enter ID ('M' for MAIN MENU): ");
+            System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
             String id = SCAN.nextLine();
             if (id.toLowerCase().equals("m")) {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
             if (searchedEmployee != null) {
-                System.out.println("FOUND\n");
-                // System.out.println(employee);
-                // Enter update employee sub menu
-
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
+                System.out.println(searchedEmployee);
+                updateEmployeeSubMenu(searchedEmployee.empId());
             } else {
-                System.out.println("\nNOT FOUND\n");
+                System.out.println(ConsoleColours.RED + "NO RECORDS FOUND\n" + ConsoleColours.RESET);
             }
         }
+    }
+
+    public void updateEmployeeSubMenu(String employeeID) {
+        System.out.println("1: Title");
+        System.out.println("2: First Name");
+        System.out.println("3: Middle Initial");
+        System.out.println("4: Last Name");
+        System.out.println("5: Gender");
+        System.out.println("6: Email");
+        System.out.println("7: Birthday");
+        System.out.println("8: Join Date");
+        System.out.println("9: Salary");
+
+        System.out.print("\nChoose field to update: ");
+        String userInput = SCAN.nextLine();
+
+        switch (userInput) {
+            case "1" -> employeeDAO.updateEmployee(employeeID, "prefix", enterUpdateValue("title"));
+            case "2" -> employeeDAO.updateEmployee(employeeID, "first name", enterUpdateValue("first name"));
+            case "3" -> employeeDAO.updateEmployee(employeeID, "middle name", enterUpdateValue("middle name"));
+            case "4" -> employeeDAO.updateEmployee(employeeID, "last name", enterUpdateValue("last name"));
+            case "5" -> employeeDAO.updateEmployee(employeeID, "gender", enterUpdateValue("gender"));
+            case "6" -> employeeDAO.updateEmployee(employeeID, "email", enterUpdateValue("email"));
+            case "7" -> employeeDAO.updateEmployee(employeeID, "dob", enterUpdateValue("date of birth"));
+            case "8" -> employeeDAO.updateEmployee(employeeID, "doj", enterUpdateValue("date of joining"));
+            case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue("salary"));
+        }
+        System.out.println(employeeDAO.getEmployee("id", employeeID));
+        System.out.println("\n" + ConsoleColours.GREEN + "Employee successfully updated" + ConsoleColours.RESET);
+    }
+
+    public String enterUpdateValue(String fieldName) {
+        System.out.print("Enter new " + fieldName + ": ");
+        String userInput = SCAN.nextLine();
+        return userInput;
     }
 
     private void deleteEmployeeMenu() {
         System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE DELETION" + ConsoleColours.RESET);
 
-        boolean exit = false;
         while (true) {
             System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
