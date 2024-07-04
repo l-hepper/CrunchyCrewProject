@@ -203,22 +203,47 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
             if (searchedEmployee != null) {
-                System.out.println("FOUND\n");
-                // System.out.println(employee);
-                // Enter update employee sub menu
-
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
+                System.out.println(searchedEmployee);
+                updateEmployeeSubMenu(searchedEmployee.empId());
             } else {
-                System.out.println("\nNOT FOUND\n");
+                System.out.println(ConsoleColours.RED + "NO RECORDS FOUND\n" + ConsoleColours.RESET);
             }
         }
+    }
+
+    public void updateEmployeeSubMenu(String employeeID) {
+        System.out.println("1: Title");
+        System.out.println("2: First Name");
+        System.out.println("3: Middle Initial");
+        System.out.println("4: Last Name");
+        System.out.println("5: Gender");
+        System.out.println("6: Email");
+        System.out.println("7: Birthday");
+        System.out.println("8: Join Date");
+        System.out.println("9: Salary");
+
+        System.out.print("Choose field to update: ");
+        String userInput = SCAN.nextLine();
+
+        switch (userInput) {
+            case "1" -> employeeDAO.updateEmployee(employeeID, "prefix", enterUpdateValue());
+        }
+        System.out.println(employeeDAO.getEmployee("id", employeeID));
+        System.out.println("Employee successfully updated");
+    }
+
+    public String enterUpdateValue() {
+        System.out.print("Enter new value: ");
+        String userInput = SCAN.nextLine();
+        return userInput;
     }
 
     private void deleteEmployeeMenu() {
         System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE DELETION" + ConsoleColours.RESET);
 
-        boolean exit = false;
         while (true) {
             System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
