@@ -50,4 +50,9 @@ public record Employee(String empId,
     public int hashCode() {
         return Objects.hash(empId, prefix, firstName, middleInitial, lastName, gender, email, dob, dateOfJoining, salary);
     }
+    // String.format("%-10s "  + "%-25s " + "%-10s" + "%-30s" + "%-11s" + "%-11s" + "%-12s" + salary, empId, fullName, gender, email, dob, dateOfJoining, salary);
+    public String printNicely() {
+        String fullName = firstName + " " + middleInitial + " " + lastName;
+        return String.format("%-10s " + "%-25s" + "%-20s" + "%-30s" + "%-20s" + "%-20s", empId, fullName, gender, email, dob, dateOfJoining, salary);
+    }
 }
