@@ -25,7 +25,7 @@ public class UserInterface {
         do {
             System.out.println(ConsoleColours.UNDERLINE + "\nMAIN MENU\n" + ConsoleColours.RESET);
             System.out.println("1: CREATE New Employee record");
-            System.out.println("2: SEARCH Records By Employee ID");
+            System.out.println("2: SEARCH Records");
             System.out.println("3: UPDATE Employee Record");
             System.out.println("4: DELETE Employee Record ");
             System.out.println("Q: QUIT\n");
