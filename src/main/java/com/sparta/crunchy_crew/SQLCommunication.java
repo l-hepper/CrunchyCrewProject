@@ -21,8 +21,8 @@ public class SQLCommunication {
     public void createRecord(Employee employee) {
         logger.info("Entered create record in SQLCommunication");
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees VALUES " +
-                    "('" + employee.empId() + "', '" +
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees VALUES ('" +
+                    employee.empId() + "', '" +
                     employee.prefix() + "', '" +
                     employee.firstName() + "', '" +
                     employee.middleInitial() + "', '" +
