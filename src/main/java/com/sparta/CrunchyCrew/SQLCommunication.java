@@ -5,6 +5,8 @@ import com.sparta.CrunchyCrew.Data.DatabaseConnection;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -52,7 +54,7 @@ public class SQLCommunication {
 
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ?");
 
-        switch(flag.toLowerCase()) {
+        switch (flag.toLowerCase()) {
             case "create":
                 return statement.executeQuery("INSERT INTO employees VALUES " +
                         "('" + employee.empId() + "', '" +
@@ -109,5 +111,64 @@ public class SQLCommunication {
                 preparedStatement.setString(1, "empID = '" + employee.empId() + "'");
                 return preparedStatement.executeQuery();
         }
+    }
+
+
+    public void createRecord(Employee employee) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees VALUES " +
+                    "('" + employee.empId() + "', '" +
+                    employee.prefix() + "', '" +
+                    employee.firstName() + "', '" +
+                    employee.middleInitial() + "', '" +
+                    employee.lastName() + "', '" +
+                    employee.gender() + "', '" +
+                    employee.email() + "', '" +
+                    employee.dob() + "', '" +
+                    employee.dateOfJoining() + "', '" +
+                    employee.salary() + "')");
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Employee getEmployeeByID(String employeeID) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ID = ?");
+            preparedStatement.setString(1, employeeID);
+            ResultSet foundEmployee = preparedStatement.executeQuery();
+
+            if (foundEmployee.isBeforeFirst()) { // if employee is found
+                return packageEmployeeObject(foundEmployee);
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private Employee packageEmployeeObject(ResultSet set) throws SQLException {
+        Object[] array = new Object[10];
+        set.next();
+        Employee employee = new Employee(
+                set.getString(1),
+                set.getString(2),
+                set.getString(3),
+                set.getString(4),
+                set.getString(5),
+                set.getString(6),
+                set.getString(7),
+                LocalDate.parse(set.getDate(8).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                LocalDate.parse(set.getDate(9).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                set.getString(10)
+        );
+
+        return employee;
     }
 }
