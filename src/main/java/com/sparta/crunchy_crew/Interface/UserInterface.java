@@ -2,8 +2,10 @@ package com.sparta.crunchy_crew.Interface;
 
 import com.sparta.crunchy_crew.Employee;
 import com.sparta.crunchy_crew.EmployeeDAO;
+import com.sparta.crunchy_crew.data_parsing.CsvReader;
 import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 
+import java.io.Console;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -14,7 +16,9 @@ public class UserInterface {
     private final Scanner SCAN = new Scanner(System.in);
 
     public void start() {
-        System.out.println("\nWelcome to the CrunchyCrew CRM.");
+        System.out.println("\nWelcome to the CrunchyCrew CRM.\n");
+
+        System.out.println(ConsoleColours.RED + CsvReader.getCorruptEntryCount() + " CORRUPTED ENTRIES FOUND. " + ConsoleColours.RESET + "See log files for details.");
 
         boolean exit = false;
         do {
@@ -212,24 +216,30 @@ public class UserInterface {
     }
 
     private void deleteEmployeeMenu() {
-        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE DELETION" + ConsoleColours.RESET);
+        System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE DELETION" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
-            System.out.print("Enter ID ('M' for MAIN MENU): ");
+            System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
             String id = SCAN.nextLine();
             if (id.toLowerCase().equals("m")) {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
             if (searchedEmployee != null) {
-                System.out.println("FOUND\n");
-                // System.out.println(employee);
-                // confirm deletion of employee? if yes EmployeeDAO.deleteEmployee(employee); if no continue loop
+
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
+                System.out.println("\n" + searchedEmployee + "\n");
+                System.out.print("Are you sure you would like to delete this employee? (Y/N): ");
+                String userInput = SCAN.nextLine();
+                if (userInput.toLowerCase().equals("y")) {
+                    employeeDAO.deleteEmployee(id);
+                    System.out.println(ConsoleColours.GREEN + "Employee deleted."  + ConsoleColours.RESET);
+                }
             } else {
-                System.out.println("NOT FOUND\n");
+                System.out.println(ConsoleColours.RED + "NO RECORDS FOUND" + ConsoleColours.RESET);
             }
         }
     }

@@ -13,8 +13,12 @@ public class App {
 
     public static void main(String[] args) {
         CrunchyLogger.configure();
-        CsvReader.readCsvFile(null);
         DatabaseConnection.getInstance().getConnection();
+
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+
+//        uncomment to load in data from CSV
+//        CsvReader.readCsvFile(employeeDAO);
 
         UserInterface userInterface = new UserInterface();
         userInterface.start();
