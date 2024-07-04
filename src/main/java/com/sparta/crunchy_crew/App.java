@@ -18,7 +18,7 @@ public class App {
         EmployeeDAO employeeDAO = new EmployeeDAO();
 
 //        uncomment to load in data from CSV
-//        CsvReader.readCsvFile(employeeDAO);
+        CsvReader.readCsvFile(employeeDAO);
 
         UserInterface userInterface = new UserInterface();
         userInterface.start();

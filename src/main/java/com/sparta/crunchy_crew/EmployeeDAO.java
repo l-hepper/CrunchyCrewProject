@@ -25,31 +25,31 @@ public class EmployeeDAO {
             switch (flag.toLowerCase()) {
                 case "prefix":
                     logger.info("Returned all available employees with prefix: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByPrefix(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByPrefix(value));
                 case "first name":
                     logger.info("Returned all available employees with first name: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByFirstName(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByFirstName(value));
                 case "middle initial":
                     logger.info("Returned all available employees with middle initial: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByMiddleInitial(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByMiddleInitial(value));
                 case "last name":
                     logger.info("Returned all available employees with last name: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByLastName(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByLastName(value));
                 case "gender":
                     logger.info("Returned all available employees with gender: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByGender(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByGender(value));
                 case "email":
                     logger.info("Returned all available employees with email: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByEmail(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByEmail(value));
                 case "dob":
                     logger.info("Returned all available employees with date of birth: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByDob(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByDob(value));
                 case "doj":
                     logger.info("Returned all available employees with date of joining: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesByDoj(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesByDoj(value));
                 case "salary":
                     logger.info("Returned all available employees with salary: " + value);
-                    return packageEmployeeObject(sqlCommunication.getEmployeesBySalary(value));
+                    return packagesMultipleEmployeeObjects(sqlCommunication.getEmployeesBySalary(value));
                 default:
                     logger.info("Returned all available employees with employee ID: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeeByID(value));
