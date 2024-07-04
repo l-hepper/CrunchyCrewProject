@@ -1,12 +1,18 @@
 package com.sparta.CrunchyCrew;
 
-public class EmployeeDAO {
-    public void createEmployee() {
+import java.sql.SQLException;
 
+public class EmployeeDAO {
+
+    SQLCommunication sqlCommunication = new SQLCommunication();
+
+    public void createEmployee(Employee employee) {
+        sqlCommunication.createRecord(employee);
     }
 
-    public void getEmployee() {
-
+    public Employee getEmployee(String employeeID) {
+        Employee employee = sqlCommunication.getEmployeeByID(employeeID);
+        return employee;
     }
 
     public void updateEmployee() {

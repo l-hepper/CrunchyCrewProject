@@ -107,7 +107,6 @@ public class UserInterface {
     private void searchEmployeeMenu() {
         System.out.println(ConsoleColours.UNDERLINE + "\nEMPLOYEE SEARCH\n" + ConsoleColours.RESET);
 
-        boolean exit = false;
         while (true) {
             System.out.print("Enter ID ('M' for MAIN MENU): ");
 
@@ -116,12 +115,12 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = null; // replace with EmployeeDAO.getEmployee(id);
+            Employee searchedEmployee = employeeDAO.getEmployee(id);
             if (searchedEmployee != null) {
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
-                // System.out.println(employee)
+                System.out.println("\n" + searchedEmployee + "\n");
             } else {
-                System.out.println(ConsoleColours.RED + "NOT FOUND\n" + ConsoleColours.RESET);
+                System.out.println(ConsoleColours.RED + "NO RECORDS FOUND\n" + ConsoleColours.RESET);
             }
         }
     }
