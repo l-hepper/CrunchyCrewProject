@@ -19,42 +19,57 @@ public class EmployeeDAO {
     }
 
     public Employee getEmployee(String flag, String value) {
+        logger.info("Entered get employee method in DAO");
         try {
             switch (flag.toLowerCase()) {
                 case "prefix":
+                    logger.info("Returned all available employees with prefix: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByPrefix(value));
                 case "first name":
+                    logger.info("Returned all available employees with first name: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByFirstName(value));
                 case "middle initial":
+                    logger.info("Returned all available employees with middle initial: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByMiddleInitial(value));
                 case "last name":
+                    logger.info("Returned all available employees with last name: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByLastName(value));
                 case "gender":
+                    logger.info("Returned all available employees with gender: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByGender(value));
                 case "email":
+                    logger.info("Returned all available employees with email: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByEmail(value));
                 case "dob":
+                    logger.info("Returned all available employees with date of birth: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByDob(value));
                 case "doj":
+                    logger.info("Returned all available employees with date of joining: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesByDoj(value));
                 case "salary":
+                    logger.info("Returned all available employees with salary: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeesBySalary(value));
                 default:
+                    logger.info("Returned all available employees with employee ID: " + value);
                     return packageEmployeeObject(sqlCommunication.getEmployeeByID(value));
             }
         } catch (SQLException e) {
+            logger.severe("SQLException encountered when attempting to get employee");
             return null;
         }
 
     }
 
     public void updateEmployee(String employeeID, String flag, String newValue) {
+        logger.info("Entered update employee method in DAO");
         Employee employee = null;
         try {
             employee = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
+            logger.info("Successfully obtained employee for updating");
             Employee newEmployee = null;
             switch (flag) {
                 case "prefix":
+                    logger.info("Updated prefix of employee with ID: " + employeeID + " from: " + employee.prefix() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             newValue,
                             employee.firstName(),
@@ -67,6 +82,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "first name":
+                    logger.info("Updated first name of employee with ID: " + employeeID + " from: " + employee.firstName() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             newValue,
@@ -79,6 +95,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "middle name":
+                    logger.info("Updated middle name of employee with ID: " + employeeID + " from: " + employee.middleInitial() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -91,6 +108,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "last name":
+                    logger.info("Updated last name of employee with ID: " + employeeID + " from: " + employee.lastName() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -103,6 +121,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "gender":
+                    logger.info("Updated gender of employee with ID: " + employeeID + " from: " + employee.gender() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -115,6 +134,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "email":
+                    logger.info("Updated email of employee with ID: " + employeeID + " from: " + employee.email() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -127,6 +147,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "dob":
+                    logger.info("Updated date of birth of employee with ID: " + employeeID + " from: " + employee.dob() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -139,6 +160,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "doj":
+                    logger.info("Updated date of joining of employee with ID: " + employeeID + " from: " + employee.dateOfJoining() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -151,6 +173,7 @@ public class EmployeeDAO {
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                 case "salary":
+                    logger.info("Updated salary of employee with ID: " + employeeID + " from: " + employee.salary() + " to: " + newValue);
                     newEmployee = new Employee(employee.empId(),
                             employee.prefix(),
                             employee.firstName(),
@@ -164,22 +187,27 @@ public class EmployeeDAO {
                     sqlCommunication.updateRecord(newEmployee);
             }
         } catch (SQLException e) {
+            logger.severe("SQLException encountered when attempting to update employee");
             e.printStackTrace();
         }
 
     }
 
     public void deleteEmployee(String employeeID) {
+        logger.info("Entered delete employee method in DAO");
         Employee employee = null;
         try {
             employee = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
             sqlCommunication.deleteRecord(employee);
+            logger.info("Successfully deleted employee record with employee ID: " + employeeID + " from database");
         } catch (SQLException e) {
+            logger.severe("SQLException encountered when attempting to delete an employee from the database");
             e.printStackTrace();
         }
     }
 
     private Employee packageEmployeeObject(ResultSet set) throws SQLException {
+        logger.info("Entered package employee object method in DAO");
         Object[] array = new Object[10];
         set.next();
         Employee employee = new Employee(
