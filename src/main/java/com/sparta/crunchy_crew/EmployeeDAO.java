@@ -43,7 +43,7 @@ public class EmployeeDAO {
                     return packageEmployeeObject(sqlCommunication.getEmployeeByID(value));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
 
     }

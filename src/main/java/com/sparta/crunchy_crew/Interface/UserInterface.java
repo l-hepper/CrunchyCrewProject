@@ -177,7 +177,7 @@ public class UserInterface {
                 break;
             }
 
-            Employee searchedEmployee = employeeDAO.getEmployee(id);
+            Employee searchedEmployee = employeeDAO.getEmployee("id", id);
             if (searchedEmployee != null) {
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
                 System.out.println("\n" + searchedEmployee + "\n");
