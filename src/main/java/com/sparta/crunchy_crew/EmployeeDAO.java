@@ -237,7 +237,6 @@ public class EmployeeDAO {
             );
             employeeList.add(employee);
         }
-        System.out.println(employeeList);
         return employeeList;
     }
 }
