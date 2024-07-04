@@ -58,7 +58,7 @@ public class SQLCommunication {
 
     public void deleteRecord(Employee employee) {
         try {
-            statement.executeQuery("DELETE FROM employees WHERE empID = '" + employee.empId() + "'");
+            statement.executeUpdate("DELETE FROM employees WHERE ID = '" + employee.empId() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         }
