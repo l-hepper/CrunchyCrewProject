@@ -12,16 +12,14 @@ public class EmployeeParserTests {
     static Stream<String> getInvalidEmployeeEntries() {
         return Stream.of(
                 "38234,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
-                "382342,Drrrs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
+                "382341,Drrrs.,Gillian,T,Winter,F,gillian.winter@gmail.com,1/17/1960,1/28/1984,103619",
                 "382342,Drs.,,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,T,,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,F,gilli@n.winter@gmail.cooom,01/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,1/17/1960,11/28/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/8/1984,103619",
-                "382342,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,-103619",
-                "382342,,,,,,,,,",
+                "382343,Drs.,Gillian,,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
+                "382344,Drs.,Gillian,T,,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
+                "382345,Drs.,Gillian,T,Winter,,gillian.winter@gmail.com,01/17/1960,11/28/1984,103619",
+                "382346,Drs.,Gillian,T,Winter,F,gilli@n.winter@gmail.cooom,01/17/1960,11/28/1984,103619",
+                "382347,Drs.,Gillian,T,Winter,F,gillian.winter@gmail.com,01/17/1960,11/28/1984,-103619",
+                "382348,,,,,,,,,",
                 "",
                 null
         );
@@ -30,7 +28,8 @@ public class EmployeeParserTests {
     @ParameterizedTest
     @MethodSource("getInvalidEmployeeEntries")
     void givenAStringContainingAnInvalidEmployeeEntryReturnOne(String input) {
-        Assertions.assertEquals(1, EmployeeParser.parseEmployeeData(input));
+        boolean invalidEntry = EmployeeParser.parseEmployeeData(input).isEmpty();
+        Assertions.assertTrue(invalidEntry);
     }
 
 
@@ -51,6 +50,7 @@ public class EmployeeParserTests {
     @ParameterizedTest
     @MethodSource("getValidEmployeeEntries")
     void givenAStringContainingAValidEmployeeEntryReturnZero(String input) {
-        Assertions.assertEquals(0, EmployeeParser.parseEmployeeData(input));
+        boolean validEntry = EmployeeParser.parseEmployeeData(input).isPresent();
+        Assertions.assertTrue(validEntry);
     }
 }

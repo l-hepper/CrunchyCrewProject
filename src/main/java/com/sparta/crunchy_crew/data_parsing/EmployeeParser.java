@@ -1,9 +1,12 @@
 package com.sparta.crunchy_crew.data_parsing;
 
+import com.sparta.crunchy_crew.Employee;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -12,41 +15,50 @@ public class EmployeeParser {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("M/d/yyyy");
     private static final HashSet<String> employeeIds = new HashSet<>();
 
-    // Return Codes:
-    // 0: valid data
-    // 1: invalid data
-    public static int parseEmployeeData(String employeeEntry) {
+    public static Optional<Employee> parseEmployeeData(String employeeEntry) {
+        Employee employeeRecord;
         if (employeeEntry == null){
             LOGGER.warning("Invalid employeeEntry: null");
-            return 1;
+            return Optional.empty();
         }
 
         String[] csvValues = employeeEntry.split(",");
         if (csvValues.length != 10){
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
-            return 1;
+            return Optional.empty();
         }
 
         try {
             String employeeId = parseEmpId(csvValues[0]);
             String prefix = parsePrefix(csvValues[1]);
             String firstName = parseFirstName(csvValues[2]);
-            Character midInitial = parseMiddleInitial(csvValues[3]);
+            char midInitial = parseMiddleInitial(csvValues[3]);
             String lastName = parseLastName(csvValues[4]);
-            Character gender = parseGender(csvValues[5]);
+            char gender = parseGender(csvValues[5]);
             String email = parseEmail(csvValues[6]);
             LocalDate birthday = parseBirthday(csvValues[7]);
             LocalDate startDate = parseStartDate(csvValues[8], birthday);
             int salary = parseSalary(csvValues[9]);
 
             employeeIds.add(employeeId);
+            employeeRecord = new Employee(
+                    employeeId,
+                    prefix,
+                    firstName,
+                    Character.toString(midInitial),
+                    lastName,
+                    Character.toString(gender),
+                    email,
+                    birthday,
+                    startDate,
+                    Integer.toString(salary));
+
         } catch (IllegalArgumentException e) {
             LOGGER.warning(e.getMessage());
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
-            return 1;
+            return Optional.empty();
         }
-        // TODO: Call DAO to send parsed data to database
-        return 0;
+        return Optional.of(employeeRecord);
     }
 
     public static String parseEmpId(String employeeId) throws IllegalArgumentException {
