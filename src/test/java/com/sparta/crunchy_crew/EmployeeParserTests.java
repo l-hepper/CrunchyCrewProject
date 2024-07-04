@@ -2,12 +2,24 @@ package com.sparta.crunchy_crew;
 
 import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class EmployeeParserTests {
+
+    static Stream<String> getEmptyOrNullStrings() {
+        return Stream.of(
+                "",
+                null
+        );
+    }
 
     static Stream<String> getInvalidEmployeeEntries() {
         return Stream.of(
@@ -52,5 +64,221 @@ public class EmployeeParserTests {
     void givenAStringContainingAValidEmployeeEntryReturnZero(String input) {
         boolean validEntry = EmployeeParser.parseEmployeeData(input).isPresent();
         Assertions.assertTrue(validEntry);
+    }
+
+    @Test
+    public void givenValidEmployeeIDReturnsString() {
+        String empId = "123456";
+        assertEquals(empId, EmployeeParser.parseEmpId(empId));
+    }
+
+    @Test
+    public void givenInvalidEmployeeIDThrowsException() {
+        String empId = "asd434123n222";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmpId(empId));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullEmployeeIDThrowsException(String empId) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmpId(empId));
+    }
+
+    @Test
+    public void givenValidPrefixReturnsString() {
+        String prefix = "Mr.";
+        assertEquals(prefix, EmployeeParser.parsePrefix(prefix));
+    }
+
+    @Test
+    public void givenInvalidPrefixNoDotReturnsThrowsException() {
+        String prefix = "Mrs";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parsePrefix(prefix));
+    }
+
+    @Test
+    public void givenInvalidPrefixLessThanThreeReturnsThrowsException() {
+        String prefix = "Mr";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parsePrefix(prefix));
+    }
+
+    @Test
+    public void givenInvalidPrefixGreaterThanFiveThrowsException() {
+        String prefix = "Proff.";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parsePrefix(prefix));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullPrefixThrowsException(String prefix) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parsePrefix(prefix));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullFirstNameThrowsException(String name) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseFirstName(name));
+    }
+
+    @Test
+    public void givenInvalidMiddleInitialThrowsException() {
+        String initial = "JJ";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseMiddleInitial(initial));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullMiddleInitialThrowsException(String initial) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseMiddleInitial(initial));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullLastNameThrowsException(String name) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseLastName(name));
+    }
+
+    @Test
+    public void givenValidGenderReturnChar() {
+        String gender = "F";
+        assertEquals('F', EmployeeParser.parseGender(gender));
+    }
+
+    @Test
+    public void givenInvalidGenderThrowsException() {
+        String gender = "P";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseGender(gender));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullGenderThrowsException(String gender) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseGender(gender));
+    }
+
+    @Test
+    public void givenValidEmailReturnString() {
+        String email = "username@domain.co.uk";
+        assertEquals(email, EmployeeParser.parseEmail(email));
+    }
+
+    @Test
+    public void givenInvalidEmailTwoAtSignsThrowsException() {
+        String email = "usern@me@email.gov";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmail(email));
+    }
+
+    @Test
+    public void givenInvalidEmailDoubleDotsThrowsException() {
+        String email = "user..name@email.gov";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmail(email));
+    }
+
+    @Test
+    public void givenInvalidEmailEndsWithDotThrowsException() {
+        String email = "username@domain.com.";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmail(email));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullEmailThrowsException(String email) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseEmail(email));
+    }
+
+    @Test
+    public void givenValidBirthdayReturnLocalDate() {
+        String birthday = "1/1/1990";
+        assertEquals(LocalDate.of(1990, 1, 1), EmployeeParser.parseBirthday(birthday));
+    }
+
+    @Test
+    public void givenInvalidBirthdayWrongFormatThrowException() {
+        String birthday = "1990/01/01";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseBirthday(birthday));
+    }
+
+    @Test
+    public void givenInvalidBirthdayTooYoungThrowException() {
+        String birthday = "04/07/2020";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseBirthday(birthday));
+    }
+
+    @Test
+    public void givenInvalidBirthdayTooOldThrowException() {
+        String birthday = "04/07/1920";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseBirthday(birthday));
+    }
+
+    @Test
+    public void givenInvalidBirthdayInFutureThrowException() {
+        String birthday = "04/07/2920";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseBirthday(birthday));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullBirthdayThrowsException(String birthday) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseBirthday(birthday));
+    }
+
+    @Test
+    public void givenValidStartDateReturnLocalDate() {
+        String startDate = "1/1/2020";
+        assertEquals(LocalDate.of(2020, 1, 1), EmployeeParser.parseStartDate(startDate, LocalDate.of(2000, 1, 1)));
+    }
+
+    @Test
+    public void givenInvalidStartDateWrongFormatThrowException() {
+        String startDate = "2020-01-01";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate(startDate, LocalDate.of(2000, 1, 1)));
+    }
+
+    @Test
+    public void givenInvalidStartDateTooYoungThrowException() {
+        String startDate = "1/1/2020";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate(startDate, LocalDate.of(2005, 1, 1)));
+    }
+
+    @Test
+    public void givenInvalidStartDateInFutureThrowException() {
+        String startDate = "1/1/3020";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate(startDate, LocalDate.of(2000, 1, 1)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullStartDateThrowsException(String startDate) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate(startDate,  LocalDate.of(2000, 1, 1)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullBirthdayForStartDateThrowsException(String birthday) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate("1/1/2020",  null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullStartDateAndBirthdayThrowsException(String startDate) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseStartDate(startDate, null));
+    }
+
+    @Test
+    public void givenValidSalaryReturnInt() {
+        String salary = "50000";
+        assertEquals(50000, EmployeeParser.parseSalary(salary));
+    }
+
+    @Test
+    public void givenInvalidSalaryThrowException() {
+        String salary = "-50000";
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseSalary(salary));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEmptyOrNullStrings")
+    public void givenEmptyOrNullSalaryThrowsException(String salary) {
+        assertThrowsExactly(IllegalArgumentException.class,() -> EmployeeParser.parseSalary(salary));
     }
 }
