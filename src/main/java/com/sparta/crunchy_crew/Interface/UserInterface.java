@@ -239,8 +239,9 @@ public class UserInterface {
             case "8" -> employeeDAO.updateEmployee(employeeID, "doj", enterUpdateValue("date of joining"));
             case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue("salary"));
         }
-        System.out.println(employeeDAO.getEmployee("id", employeeID));
         System.out.println("\n" + ConsoleColours.GREEN + "Employee successfully updated" + ConsoleColours.RESET);
+        System.out.println(employeeDAO.getEmployee("id", employeeID));
+
     }
 
     public String enterUpdateValue(String fieldName) {
@@ -277,6 +278,3 @@ public class UserInterface {
         }
     }
 }
-
-
-// DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]");
