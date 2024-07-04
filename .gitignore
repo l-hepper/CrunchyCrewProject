@@ -1,8 +1,9 @@
 # Compiled class file
 *.class
-
+resources/
 # Log file
 *.log
+*.properties
 
 # Package Files #
 *.jar
