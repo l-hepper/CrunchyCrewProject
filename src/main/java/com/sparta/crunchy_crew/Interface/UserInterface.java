@@ -155,7 +155,8 @@ public class UserInterface {
             String submit = SCAN.nextLine().trim().toLowerCase();
             if (submit.equals("y")) {
 
-                employeeDAO.createEmployee(newEmployee);
+                employeeDAO.addToBatchStatement(newEmployee);
+                employeeDAO.createEmployee();
                 System.out.print("\nEmployee successfully submitted to database.");
 
             } else {

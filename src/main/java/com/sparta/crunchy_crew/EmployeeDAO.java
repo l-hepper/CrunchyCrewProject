@@ -15,8 +15,13 @@ public class EmployeeDAO {
 
     SQLCommunication sqlCommunication = new SQLCommunication();
 
-    public void createEmployee(Employee employee) {
-        sqlCommunication.createRecord(employee);
+
+    public void addToBatchStatement(Employee employee) {
+        sqlCommunication.addToBatchStatement(employee);
+    }
+
+    public void createEmployee() {
+        sqlCommunication.createRecord();
     }
 
     public ArrayList<Employee> getEmployee(String flag, String value) {
@@ -237,7 +242,6 @@ public class EmployeeDAO {
             );
             employeeList.add(employee);
         }
-        System.out.println(employeeList);
         return employeeList;
     }
 }

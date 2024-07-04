@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -18,25 +19,36 @@ public class SQLCommunication {
     public static Connection connection = connector.getConnection();
     public static Statement statement = connector.getStatement();
 
-    public void createRecord(Employee employee) {
-        logger.info("Entered create record in SQLCommunication");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees VALUES ('" +
-                    employee.empId() + "', '" +
-                    employee.prefix() + "', '" +
-                    employee.firstName() + "', '" +
-                    employee.middleInitial() + "', '" +
-                    employee.lastName() + "', '" +
-                    employee.gender() + "', '" +
-                    employee.email() + "', '" +
-                    employee.dob() + "', '" +
-                    employee.dateOfJoining() + "', '" +
-                    employee.salary() + "')");
+    private PreparedStatement preparedStatement = connector.getPreparedStatement();
 
-            preparedStatement.executeUpdate();
-            logger.info("Successfully created employee entry with employee ID: " + employee.empId() + "and added entry to the database");
+    public void addToBatchStatement(Employee employee) {
+        try {
+            preparedStatement.setString(1, employee.empId());
+            preparedStatement.setString(2, employee.prefix());
+            preparedStatement.setString(3, employee.firstName());
+            preparedStatement.setString(4, employee.middleInitial());
+            preparedStatement.setString(5, employee.lastName());
+            preparedStatement.setString(6, employee.gender());
+            preparedStatement.setString(7, employee.email());
+            preparedStatement.setString(8, String.valueOf(employee.dob()));
+            preparedStatement.setString(9, String.valueOf(employee.dateOfJoining()));
+            preparedStatement.setString(10, employee.salary());
+            preparedStatement.addBatch();
         } catch (SQLException e) {
-            logger.severe("SQLException encountered when attempting to add a new entry to employee database");
+            logger.severe("SQLException encountered when attempting to add a batch entry to employee database");
+            e.printStackTrace();
+        }
+    }
+
+    public void createRecord() {
+        logger.info("Entered create record in SQLCommunication");
+
+        try {
+            preparedStatement.executeBatch();
+            preparedStatement.clearParameters();
+            logger.info("Successfully executed and cleared batch statement");
+        } catch (SQLException e) {
+            logger.severe("SQLException encountered when attempting to add a batch entry to employee database");
             e.printStackTrace();
         }
     }
