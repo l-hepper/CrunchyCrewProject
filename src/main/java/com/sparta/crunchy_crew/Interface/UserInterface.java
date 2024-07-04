@@ -148,7 +148,8 @@ public class UserInterface {
 
             Employee newEmployee = new Employee(id, title, firstName, middleInitial, lastName, gender, email, birthdayLocalDate, joinDateLocalDate, salary);
 
-            System.out.println(newEmployee);
+            printRecordHeader();
+            System.out.println(newEmployee.printNicely());
 
             System.out.print("See details above. Submit to database? (Y/N): ");
             String submit = SCAN.nextLine().trim().toLowerCase();
@@ -244,7 +245,8 @@ public class UserInterface {
             Employee searchedEmployee = employeeDAO.getEmployee("id", id).getFirst();
             if (searchedEmployee != null) {
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
-                System.out.println(searchedEmployee);
+                printRecordHeader();
+                System.out.println(searchedEmployee.printNicely());
                 updateEmployeeSubMenu(searchedEmployee.empId());
             } else {
                 System.out.println(ConsoleColours.RED + "NO RECORDS FOUND\n" + ConsoleColours.RESET);
@@ -253,7 +255,7 @@ public class UserInterface {
     }
 
     public void updateEmployeeSubMenu(String employeeID) {
-        System.out.println("1: Title");
+        System.out.println("\n1: Title");
         System.out.println("2: First Name");
         System.out.println("3: Middle Initial");
         System.out.println("4: Last Name");
@@ -278,7 +280,12 @@ public class UserInterface {
             case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue("salary"));
         }
         System.out.println("\n" + ConsoleColours.GREEN + "Employee successfully updated" + ConsoleColours.RESET);
-        System.out.println(employeeDAO.getEmployee("id", employeeID));
+        ArrayList<Employee> updated = employeeDAO.getEmployee("id", employeeID);
+
+        printRecordHeader();
+        for (Employee emp : updated) {
+            System.out.println(emp.printNicely());
+        }
 
     }
 
@@ -302,9 +309,10 @@ public class UserInterface {
             Employee searchedEmployee = employeeDAO.getEmployee("id", id).getFirst();
             if (searchedEmployee != null) {
 
-                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
-                System.out.println("\n" + searchedEmployee + "\n");
-                System.out.print("Are you sure you would like to delete this employee? (Y/N): ");
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
+                printRecordHeader();
+                System.out.println(searchedEmployee.printNicely());
+                System.out.print("\nAre you sure you would like to delete this employee? (Y/N): ");
                 String userInput = SCAN.nextLine();
                 if (userInput.toLowerCase().equals("y")) {
                     employeeDAO.deleteEmployee(id);
