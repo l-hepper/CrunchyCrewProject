@@ -325,6 +325,6 @@ public class UserInterface {
         String joinDate = "JOIN DATE";
         String salary = "SALARY";
         //// String.format("%-10s "  + "%-25s " + "%-10s" + "%-30s" + "%-11s" + "%-11s" + "%-12s" + salary, empId, fullName, gender, email, dob, dateOfJoining, salary);
-        System.out.println(String.format("%-10s " + "%-25s" + "%-20s" + "%-30s" + "%-20s" + "%-20s", id, name, gender, email, birthday, joinDate, salary));
+        System.out.println(String.format("%-10s " + "%-25s" + "%-10s" + "%-30s" + "%-20s" + "%-20s", id, name, gender, email, birthday, joinDate, salary));
     }
 }
