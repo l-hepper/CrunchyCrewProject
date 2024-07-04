@@ -1,6 +1,7 @@
 package com.sparta.crunchy_crew;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public record Employee(String empId,
                        String prefix,
@@ -27,5 +28,26 @@ public record Employee(String empId,
                 ", dateOfJoining=" + dateOfJoining +
                 ", salary=" + salary +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Employee employee
+                && empId.equals(employee.empId)
+                && prefix.equals(employee.prefix)
+                && firstName.equals(employee.firstName)
+                && middleInitial.equals(employee.middleInitial)
+                && lastName.equals(employee.lastName)
+                && gender.equals(employee.gender)
+                && email.equals(employee.email)
+                && dob.equals(employee.dob)
+                && dateOfJoining.equals(employee.dateOfJoining)
+                && salary.equals(employee.salary)
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(empId, prefix, firstName, middleInitial, lastName, gender, email, dob, dateOfJoining, salary);
     }
 }

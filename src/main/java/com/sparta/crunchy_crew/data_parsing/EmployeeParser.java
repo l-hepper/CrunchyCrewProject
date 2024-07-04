@@ -17,13 +17,13 @@ public class EmployeeParser {
 
     public static Optional<Employee> parseEmployeeData(String employeeEntry) {
         Employee employeeRecord;
-        if (employeeEntry == null){
+        if (employeeEntry == null) {
             LOGGER.warning("Invalid employeeEntry: null");
             return Optional.empty();
         }
 
         String[] csvValues = employeeEntry.split(",");
-        if (csvValues.length != 10){
+        if (csvValues.length != 10) {
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
             return Optional.empty();
         }
@@ -41,17 +41,7 @@ public class EmployeeParser {
             int salary = parseSalary(csvValues[9]);
 
             employeeIds.add(employeeId);
-            employeeRecord = new Employee(
-                    employeeId,
-                    prefix,
-                    firstName,
-                    Character.toString(midInitial),
-                    lastName,
-                    Character.toString(gender),
-                    email,
-                    birthday,
-                    startDate,
-                    Integer.toString(salary));
+            employeeRecord = new Employee(employeeId, prefix, firstName, Character.toString(midInitial), lastName, Character.toString(gender), email, birthday, startDate, Integer.toString(salary));
 
         } catch (IllegalArgumentException e) {
             LOGGER.warning("Invalid employeeEntry: " + employeeEntry);
@@ -109,7 +99,8 @@ public class EmployeeParser {
     }
 
     public static String parseEmail(String email) throws IllegalArgumentException {
-        if (Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$").matcher(email).matches()) {
+        if (email == null) throw new IllegalArgumentException("IllegalArgumentException: Invalid email : null");
+        if (Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?").matcher(email).matches()) {
             return email;
         } else {
             throw new IllegalArgumentException("IllegalArgumentException: Invalid email: " + email);
@@ -117,8 +108,9 @@ public class EmployeeParser {
     }
 
     public static LocalDate parseBirthday(String birthday) throws IllegalArgumentException {
-        LocalDate parsedDate = null;
+        if (birthday == null) throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday : null");
 
+        LocalDate parsedDate;
         try {
             parsedDate = LocalDate.parse(birthday, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
@@ -135,8 +127,13 @@ public class EmployeeParser {
     }
 
     public static LocalDate parseStartDate(String startDate, LocalDate birthday) throws IllegalArgumentException {
-        LocalDate parsedDate = null;
+        if (startDate == null) {
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate : null");
+        } else if (birthday == null) {
+            throw new IllegalArgumentException("IllegalArgumentException: Invalid birthday : null");
+        }
 
+        LocalDate parsedDate;
         try {
             parsedDate = LocalDate.parse(startDate, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
@@ -145,7 +142,8 @@ public class EmployeeParser {
 
         boolean startedDayOfTurningEighteen = birthday.plusYears(18).isEqual(parsedDate);
         boolean startedAfterTurningEighteen = birthday.plusYears(18).isBefore(parsedDate);
-        if (startedDayOfTurningEighteen || startedAfterTurningEighteen) {
+        boolean startsBeforeDeath = birthday.plusYears(100).isAfter(parsedDate);
+        if (startsBeforeDeath && (startedDayOfTurningEighteen || startedAfterTurningEighteen)) {
             return parsedDate;
         } else {
             throw new IllegalArgumentException("IllegalArgumentException: Invalid startDate: " + startDate);
@@ -153,7 +151,7 @@ public class EmployeeParser {
     }
 
     public static int parseSalary(String salary) throws IllegalArgumentException {
-        if (salary.matches("\\d+") && (!salary.isEmpty() || Integer.parseInt(salary) > 0)) {
+        if (salary != null && salary.matches("\\d+") && (!salary.isEmpty() || Integer.parseInt(salary) > 0)) {
             return Integer.parseInt(salary);
         } else {
             throw new IllegalArgumentException("IllegalArgumentException: Invalid salary: " + salary);
