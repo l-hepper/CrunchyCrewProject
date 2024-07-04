@@ -115,8 +115,13 @@ public class SQLCommunication {
     public ResultSet getEmployeesByFirstName(String firstName) {
         logger.info("Entered get employee by first name method in SQLCommunication");
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE first_name = ?");
-            preparedStatement.setString(1, firstName);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE first_name LIKE ?");
+            if (firstName.startsWith("*")) {
+                firstName = firstName.replace("*", "");
+                preparedStatement.setString(1, "%" + firstName + "%");
+            } else {
+                preparedStatement.setString(1, firstName);
+            }
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -145,8 +150,13 @@ public class SQLCommunication {
     public ResultSet getEmployeesByLastName(String lastName) {
         logger.info("Entered get employee by last name method in SQLCommunication");
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE last_name = ?");
-            preparedStatement.setString(1, lastName);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE last_name LIKE ?");
+            if (lastName.startsWith("*")) {
+                lastName = lastName.replace("*", "");
+                preparedStatement.setString(1, "%" + lastName + "%");
+            } else {
+                preparedStatement.setString(1, lastName);
+            }
             logger.info("Successfully returned available employees");
             return preparedStatement.executeQuery();
         } catch(SQLException e) {
@@ -232,4 +242,19 @@ public class SQLCommunication {
         return null;
     }
 
+    public ResultSet getEmployeesBySalaryRange(String salaryLowEnd, String salaryHighEnd) {
+        logger.info("Entered getEmployeeBySalaryRange method in SQLCommunication");
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE salary BETWEEN ? AND ?");
+            preparedStatement.setInt(1, Integer.parseInt(salaryLowEnd));
+            preparedStatement.setInt(2, Integer.parseInt(salaryHighEnd));
+            return preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            logger.severe("SQLException encountered when attempting to query employees by salary range.");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

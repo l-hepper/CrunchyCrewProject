@@ -1,6 +1,7 @@
 package com.sparta.crunchy_crew.data_parsing;
 
 import com.sparta.crunchy_crew.Employee;
+import com.sparta.crunchy_crew.Interface.ConsoleColours;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +56,9 @@ public class EmployeeParser {
         if (employeeId != null && employeeId.matches("\\d+") && employeeId.length() == 6 && !employeeIds.contains(employeeId)) {
             return employeeId;
         } else {
+            if (employeeIds.contains(employeeId)) {
+                throw new IllegalArgumentException("IllegalArgumentException: DUPLICATE ID: " + employeeId);
+            }
             throw new IllegalArgumentException("IllegalArgumentException: Invalid employeeId: " + employeeId);
         }
     }

@@ -1,6 +1,7 @@
 package com.sparta.crunchy_crew;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public record Employee(String empId,
@@ -53,6 +54,7 @@ public record Employee(String empId,
     // String.format("%-10s "  + "%-25s " + "%-10s" + "%-30s" + "%-11s" + "%-11s" + "%-12s" + salary, empId, fullName, gender, email, dob, dateOfJoining, salary);
     public String printNicely() {
         String fullName = firstName + " " + middleInitial + " " + lastName;
-        return String.format("%-10s " + "%-25s" + "%-10s" + "%-30s" + "%-20s" + "%-20s", empId, fullName, gender, email, dob, dateOfJoining, salary);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        return String.format("%-10s " + "%-10s" + "%-25s" + "%-12s" + "%-35s" + "%-20s" + "%-20s" + "%-10s", empId, prefix, fullName, gender, email, dob.format(formatter), dateOfJoining.format(formatter), salary);
     }
 }
