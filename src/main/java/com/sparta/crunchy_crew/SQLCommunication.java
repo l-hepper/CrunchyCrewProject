@@ -14,105 +14,9 @@ public class SQLCommunication {
 
     private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
 
-    public void connect() {
-
-        Properties properties = new Properties();
-        try {
-            properties.load(new FileReader("src/main/resources/mysql.properties"));
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
-
-        try (
-                Connection connection = DriverManager.getConnection(
-                        properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"));
-
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM northwind.customers");
-        ) {
-            while (resultSet.next()) {
-                System.out.println(resultSet.getInt(1));
-                System.out.println(resultSet.getString(2));
-                System.out.println(resultSet.getString(3));
-            }
-
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM northwind.customers WHERE CustomerName = ?");
-            preparedStatement.setString(1, "Manish");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static DatabaseConnection connector = DatabaseConnection.getInstance();
     public static Connection connection = connector.getConnection();
     public static Statement statement = connector.getStatement();
-
-    public ResultSet queryDatabase(Employee employee, String flag) throws SQLException {
-
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ?");
-
-        switch (flag.toLowerCase()) {
-            case "create":
-                return statement.executeQuery("INSERT INTO employees VALUES " +
-                        "('" + employee.empId() + "', '" +
-                        employee.prefix() + "', '" +
-                        employee.firstName() + "', '" +
-                        employee.middleInitial() + "', '" +
-                        employee.lastName() + "', '" +
-                        employee.gender() + "', '" +
-                        employee.email() + "', '" +
-                        employee.dob() + "', '" +
-                        employee.dateOfJoining() + "', '" +
-                        employee.salary() + "')");
-            case "update":
-                return statement.executeQuery("UPDATE employees SET prefix = '" +
-                        employee.prefix() + "', first_name = '" +
-                        employee.firstName() + "', middle_initial = '" +
-                        employee.middleInitial() + "', last_name = '" +
-                        employee.lastName() + "', gender = '" +
-                        employee.gender() + "', email = '" +
-                        employee.email() + "', dob = '" +
-                        employee.dob() + "', doj = '" +
-                        employee.dateOfJoining() + "', salary = '" +
-                        employee.salary() + "')");
-            case "delete":
-                return statement.executeQuery("DELETE FROM employees WHERE empID = '" + employee.empId() + "'");
-            case "prefix":
-                preparedStatement.setString(1, "prefix = '" + employee.prefix() + "'");
-                return preparedStatement.executeQuery();
-            case "first name":
-                preparedStatement.setString(1, "first_name = '" + employee.firstName() + "'");
-                return preparedStatement.executeQuery();
-            case "middle initial":
-                preparedStatement.setString(1, "middle_initial = '" + employee.middleInitial() + "'");
-                return preparedStatement.executeQuery();
-            case "last name":
-                preparedStatement.setString(1, "last_name = '" + employee.lastName() + "'");
-                return preparedStatement.executeQuery();
-            case "gender":
-                preparedStatement.setString(1, "gender = '" + employee.gender() + "'");
-                return preparedStatement.executeQuery();
-            case "email":
-                preparedStatement.setString(1, "email = '" + employee.email() + "'");
-                return preparedStatement.executeQuery();
-            case "dob":
-                preparedStatement.setString(1, "dob = '" + employee.dob() + "'");
-                return preparedStatement.executeQuery();
-            case "doj":
-                preparedStatement.setString(1, "doj = '" + employee.dateOfJoining() + "'");
-                return preparedStatement.executeQuery();
-            case "salary":
-                preparedStatement.setString(1, "salary = '" + employee.salary() + "'");
-                return preparedStatement.executeQuery();
-            default:
-                preparedStatement.setString(1, "empID = '" + employee.empId() + "'");
-                return preparedStatement.executeQuery();
-        }
-    }
-
 
     public void createRecord(Employee employee) {
         try {
@@ -134,24 +38,151 @@ public class SQLCommunication {
         }
     }
 
-
-    public Employee getEmployeeByID(String employeeID) {
+    public void updateRecord(Employee employee) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ID = ?");
-            preparedStatement.setString(1, employeeID);
-            ResultSet foundEmployee = preparedStatement.executeQuery();
-
-            if (foundEmployee.isBeforeFirst()) { // if employee is found
-                return packageEmployeeObject(foundEmployee);
-            } else {
-                return null;
-            }
-
+            statement.executeQuery("UPDATE employees SET prefix = '" +
+            employee.prefix() + "', first_name = '" +
+            employee.firstName() + "', middle_initial = '" +
+            employee.middleInitial() + "', last_name = '" +
+            employee.lastName() + "', gender = '" +
+            employee.gender() + "', email = '" +
+            employee.email() + "', dob = '" +
+            employee.dob() + "', doj = '" +
+            employee.dateOfJoining() + "', salary = '" +
+            employee.salary() + "' WHERE empID = " +
+            employee.empId());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
+    public void deleteRecord(Employee employee) {
+        try {
+            statement.executeQuery("DELETE FROM employees WHERE empID = '" + employee.empId() + "'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getEmployeeByID(String employeeID) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE ID = ?");
+            preparedStatement.setString(1, employeeID);
+            return preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByPrefix(String prefix) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE prefix = ?");
+            preparedStatement.setString(1, "'" + prefix + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByFirstName(String firstName) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE firstName = ?");
+            preparedStatement.setString(1, "'" + firstName + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByMiddleInitial(String middleInitial) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE middleInitial = ?");
+            preparedStatement.setString(1, "'" + middleInitial + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByLastName(String lastName) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE lastName = ?");
+            preparedStatement.setString(1, "'" + lastName + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByGender(String gender) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE gender = ?");
+            preparedStatement.setString(1, "'" + gender + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByEmail(String email) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE email = ?");
+            preparedStatement.setString(1, "'" + email + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByDob(String dob) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE dob = ?");
+            preparedStatement.setString(1, "'" + dob + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesByDoj(String doj) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE doj = ?");
+            preparedStatement.setString(1, "'" + doj + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ResultSet getEmployeesBySalary(String salary) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE salary = ?");
+            preparedStatement.setString(1, "'" + salary + "'");
+            return preparedStatement.executeQuery();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     private Employee packageEmployeeObject(ResultSet set) throws SQLException {
         Object[] array = new Object[10];
@@ -165,7 +196,7 @@ public class SQLCommunication {
                 set.getString(6),
                 set.getString(7),
                 LocalDate.parse(set.getDate(8).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                LocalDate.parse(set.getDate(9).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                LocalDate.parse(set.getDate(9).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 set.getString(10)
         );
 
