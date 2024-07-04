@@ -38,7 +38,7 @@ public class UserInterface {
                 case ("2") -> searchEmployeeMenu();
                 case ("3") -> updateEmployeeMenu();
                 case ("4") -> deleteEmployeeMenu();
-                case ("Q") -> {
+                case ("Q"), ("q") -> {
                     System.out.println("Shutting down CrunchyCrew CRM...Goodbye.");
                     exit = true;
                 }
@@ -206,8 +206,9 @@ public class UserInterface {
 
             if (!employeeList.isEmpty()) {
                 System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
+                printRecordHeader();
                 for (Employee emp : employeeList) {
-                    System.out.println(emp);
+                    System.out.println(emp.printNicely());
                 }
 
                 System.out.print("\n" + "Search again? (Y/N):");
@@ -313,5 +314,17 @@ public class UserInterface {
                 System.out.println(ConsoleColours.RED + "NO RECORDS FOUND" + ConsoleColours.RESET);
             }
         }
+    }
+
+    public void printRecordHeader() {
+        String id = "ID";
+        String name = "NAME";
+        String gender = "GENDER";
+        String email = "EMAIL";
+        String birthday = "DOB";
+        String joinDate = "JOIN DATE";
+        String salary = "SALARY";
+        //// String.format("%-10s "  + "%-25s " + "%-10s" + "%-30s" + "%-11s" + "%-11s" + "%-12s" + salary, empId, fullName, gender, email, dob, dateOfJoining, salary);
+        System.out.println(String.format("%-10s " + "%-25s" + "%-20s" + "%-30s" + "%-20s" + "%-20s", id, name, gender, email, birthday, joinDate, salary));
     }
 }
