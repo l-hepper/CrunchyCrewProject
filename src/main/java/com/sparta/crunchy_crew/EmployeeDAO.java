@@ -52,7 +52,6 @@ public class EmployeeDAO {
         Employee employee = null;
         try {
             employee = packageEmployeeObject(sqlCommunication.getEmployeeByID(employeeID));
-            System.out.println("updateEmployeeMethod" + employee);
             Employee newEmployee = null;
             switch (flag) {
                 case "prefix":

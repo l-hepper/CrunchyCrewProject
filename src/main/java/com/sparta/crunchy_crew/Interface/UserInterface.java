@@ -192,11 +192,11 @@ public class UserInterface {
     }
 
     private void updateEmployeeMenu() {
-        System.out.println(ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
+        System.out.println("\n" + ConsoleColours.UNDERLINE + "EMPLOYEE UPDATE" + ConsoleColours.RESET);
 
         boolean exit = false;
         while (true) {
-            System.out.print("Enter ID ('M' for MAIN MENU): ");
+            System.out.print("\n" + "Enter ID ('M' for MAIN MENU): ");
 
             String id = SCAN.nextLine();
             if (id.toLowerCase().equals("m")) {
@@ -205,7 +205,7 @@ public class UserInterface {
 
             Employee searchedEmployee = employeeDAO.getEmployee("id", id);
             if (searchedEmployee != null) {
-                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET);
+                System.out.println(ConsoleColours.GREEN + "FOUND" + ConsoleColours.RESET + "\n");
                 System.out.println(searchedEmployee);
                 updateEmployeeSubMenu(searchedEmployee.empId());
             } else {
@@ -225,26 +225,26 @@ public class UserInterface {
         System.out.println("8: Join Date");
         System.out.println("9: Salary");
 
-        System.out.print("Choose field to update: ");
+        System.out.print("\nChoose field to update: ");
         String userInput = SCAN.nextLine();
 
         switch (userInput) {
-            case "1" -> employeeDAO.updateEmployee(employeeID, "prefix", enterUpdateValue());
-            case "2" -> employeeDAO.updateEmployee(employeeID, "first name", enterUpdateValue());
-            case "3" -> employeeDAO.updateEmployee(employeeID, "middle name", enterUpdateValue());
-            case "4" -> employeeDAO.updateEmployee(employeeID, "last name", enterUpdateValue());
-            case "5" -> employeeDAO.updateEmployee(employeeID, "gender", enterUpdateValue());
-            case "6" -> employeeDAO.updateEmployee(employeeID, "email", enterUpdateValue());
-            case "7" -> employeeDAO.updateEmployee(employeeID, "dob", enterUpdateValue());
-            case "8" -> employeeDAO.updateEmployee(employeeID, "doj", enterUpdateValue());
-            case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue());
+            case "1" -> employeeDAO.updateEmployee(employeeID, "prefix", enterUpdateValue("title"));
+            case "2" -> employeeDAO.updateEmployee(employeeID, "first name", enterUpdateValue("first name"));
+            case "3" -> employeeDAO.updateEmployee(employeeID, "middle name", enterUpdateValue("middle name"));
+            case "4" -> employeeDAO.updateEmployee(employeeID, "last name", enterUpdateValue("last name"));
+            case "5" -> employeeDAO.updateEmployee(employeeID, "gender", enterUpdateValue("gender"));
+            case "6" -> employeeDAO.updateEmployee(employeeID, "email", enterUpdateValue("email"));
+            case "7" -> employeeDAO.updateEmployee(employeeID, "dob", enterUpdateValue("date of birth"));
+            case "8" -> employeeDAO.updateEmployee(employeeID, "doj", enterUpdateValue("date of joining"));
+            case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue("salary"));
         }
         System.out.println(employeeDAO.getEmployee("id", employeeID));
-        System.out.println("Employee successfully updated");
+        System.out.println("\n" + ConsoleColours.GREEN + "Employee successfully updated" + ConsoleColours.RESET);
     }
 
-    public String enterUpdateValue() {
-        System.out.print("Enter new value: ");
+    public String enterUpdateValue(String fieldName) {
+        System.out.print("Enter new " + fieldName + ": ");
         String userInput = SCAN.nextLine();
         return userInput;
     }
