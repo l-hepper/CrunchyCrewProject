@@ -141,7 +141,7 @@ public class EmployeeDAO {
                             employee.lastName(),
                             employee.gender(),
                             employee.email(),
-                            LocalDate.parse(newValue),
+                            LocalDate.parse(newValue, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]")),
                             employee.dateOfJoining(),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
@@ -155,7 +155,7 @@ public class EmployeeDAO {
                             employee.gender(),
                             employee.email(),
                             employee.dob(),
-                            LocalDate.parse(newValue),
+                            LocalDate.parse(newValue, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]")),
                             employee.salary());
                     sqlCommunication.updateRecord(newEmployee);
                     break;

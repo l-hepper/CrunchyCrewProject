@@ -230,6 +230,14 @@ public class UserInterface {
 
         switch (userInput) {
             case "1" -> employeeDAO.updateEmployee(employeeID, "prefix", enterUpdateValue());
+            case "2" -> employeeDAO.updateEmployee(employeeID, "first name", enterUpdateValue());
+            case "3" -> employeeDAO.updateEmployee(employeeID, "middle name", enterUpdateValue());
+            case "4" -> employeeDAO.updateEmployee(employeeID, "last name", enterUpdateValue());
+            case "5" -> employeeDAO.updateEmployee(employeeID, "gender", enterUpdateValue());
+            case "6" -> employeeDAO.updateEmployee(employeeID, "email", enterUpdateValue());
+            case "7" -> employeeDAO.updateEmployee(employeeID, "dob", enterUpdateValue());
+            case "8" -> employeeDAO.updateEmployee(employeeID, "doj", enterUpdateValue());
+            case "9" -> employeeDAO.updateEmployee(employeeID, "salary", enterUpdateValue());
         }
         System.out.println(employeeDAO.getEmployee("id", employeeID));
         System.out.println("Employee successfully updated");
