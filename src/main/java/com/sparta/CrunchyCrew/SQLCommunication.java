@@ -169,7 +169,6 @@ public class SQLCommunication {
                 set.getString(10)
         );
 
-
         return employee;
     }
 }
