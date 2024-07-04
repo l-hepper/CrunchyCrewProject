@@ -2,9 +2,8 @@ package com.sparta.crunchy_crew.Interface;
 
 import com.sparta.crunchy_crew.Employee;
 import com.sparta.crunchy_crew.EmployeeDAO;
+import com.sparta.crunchy_crew.data_parsing.EmployeeParser;
 
-import java.io.Console;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -49,43 +48,106 @@ public class UserInterface {
         while (true) {
             System.out.println("Please provide the new employee's details: \n");
 
-            System.out.print("ID (6 digits only): ");
+            System.out.print("ID: ");
             String id = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseEmpId(id);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - ID must be 6 digits only.");
+                continue;
+            }
 
-            System.out.print("Title (Mr/Mrs/Miss/Ms/Drs): ");
+            System.out.print("Title: ");
             String title = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parsePrefix(title);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - title must be (Mr./Mrs./Miss./Ms./Drs.");
+                continue;
+            }
 
             System.out.print("First Name: ");
             String firstName = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseFirstName(firstName);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - cannot be null or empty.");
+                continue;
+            }
 
             System.out.print("Middle Initial (leave blank if no middle name): ");
             String middleInitial = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseMiddleInitial(middleInitial);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - length must be one.");
+                continue;
+            }
 
             System.out.print("Last Name: ");
             String lastName = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseLastName(lastName);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - cannot be null or empty.");
+                continue;
+            }
 
             System.out.print("Gender (M/F): ");
             String gender = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseMiddleInitial(gender);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry -gender must be M or F.");
+                continue;
+            }
 
             System.out.print("Email (xxxxxx@xxxx.xxx): ");
             String email = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseEmail(email);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - email format invalid.");
+                continue;
+            }
 
             System.out.print("Date Of Birth (MM-DD-YYYY): ");
-            LocalDate dateOfBirth = LocalDate.parse(SCAN.nextLine().trim(), DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]"));
+            String birthday = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseBirthday(birthday);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - candidate must be 18 and not dead.");
+                continue;
+            }
 //
             System.out.print("Date Of Joining (MM-DD-YYYY): ");
-            LocalDate dateOfJoining = LocalDate.parse(SCAN.nextLine().trim(), DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]"));
+            String joinDate = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseStartDate(joinDate, LocalDate.parse(birthday, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]")));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - invalid entry.");
+                continue;
+            }
 
             System.out.print("Salary: ");
             String salary = SCAN.nextLine().trim();
+            try {
+                EmployeeParser.parseSalary(salary);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Entry - salary invalid.");
+                continue;
+            }
 
-            Employee newEmployee = new Employee(id, title, firstName, middleInitial, lastName, gender, email, dateOfBirth, dateOfJoining, salary);
+            LocalDate birthdayLocalDate = LocalDate.parse(birthday, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]"));
+            LocalDate joinDateLocalDate = LocalDate.parse(joinDate, DateTimeFormatter.ofPattern("[MM/dd/yyyy][M/d/yyyy][M/dd/yyyy][M/d/yyyy]"));
+
+            Employee newEmployee = new Employee(id, title, firstName, middleInitial, lastName, gender, email, birthdayLocalDate, joinDateLocalDate, salary);
+
             System.out.println(newEmployee);
 
             System.out.print("See details above. Submit to database? (Y/N): ");
             String submit = SCAN.nextLine().trim().toLowerCase();
             if (submit.equals("y")) {
-
 
                 employeeDAO.createEmployee(newEmployee);
                 System.out.print("\nEmployee successfully submitted to database.");
