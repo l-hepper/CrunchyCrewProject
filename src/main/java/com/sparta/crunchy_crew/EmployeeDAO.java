@@ -244,4 +244,15 @@ public class EmployeeDAO {
         }
         return employeeList;
     }
+
+    public ArrayList<Employee> getEmployeesBySalaryRange(String salaryLowEnd, String salaryHighEnd) {
+        try {
+            ResultSet resultSet = sqlCommunication.getEmployeesBySalaryRange(salaryLowEnd, salaryHighEnd);
+            return packagesMultipleEmployeeObjects(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -1,5 +1,7 @@
 package com.sparta.crunchy_crew.logger;
 
+import com.sparta.crunchy_crew.Interface.ConsoleColours;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Formatter;

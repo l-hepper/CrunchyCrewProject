@@ -18,6 +18,7 @@ public class UserInterface {
     public void start() {
         System.out.println("\nWelcome to the CrunchyCrew CRM.\n");
 
+        System.out.println(ConsoleColours.GREEN + CsvReader.getSanitisedEntryCounter() + " ENTRIES SUCCESSFULLY WRITTEN TO DATABASE" + ConsoleColours.RESET);
         System.out.println(ConsoleColours.RED + CsvReader.getCorruptEntryCount() + " CORRUPTED ENTRIES FOUND. " + ConsoleColours.RESET + "See log files for details.");
 
         boolean exit = false;
@@ -204,7 +205,9 @@ public class UserInterface {
                 case "6" -> employeeList = employeeDAO.getEmployee("email", enterSearchValue("Email"));
                 case "7" -> employeeList = employeeDAO.getEmployee("dob", enterSearchValue("Date of Birth"));
                 case "8" -> employeeList = employeeDAO.getEmployee("doj", enterSearchValue("Date of Joining"));
-                case "9" -> employeeList = employeeDAO.getEmployee("salary", enterSearchValue("Salary"));
+                case "9" -> employeeList = employeeDAO.getEmployeesBySalaryRange(
+                        enterSearchValue("Salary Lower Bound"),
+                        enterSearchValue("Salary Higher Bound"));
                 case "q", "Q" -> {
                     break outer;
                 }
