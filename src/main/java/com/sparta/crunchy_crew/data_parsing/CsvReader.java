@@ -21,7 +21,7 @@ public class CsvReader {
             while ((employeeEntry = fileReader.readLine()) != null) {
                 Optional<Employee> entry = EmployeeParser.parseEmployeeData(employeeEntry);
                 if (entry.isPresent()) {
-                    dataAccessObject.createEmployee(entry.get());
+                    if (dataAccessObject != null) dataAccessObject.createEmployee(entry.get());
                 } else {
                     corruptEntryCounter++;
                 }

@@ -1,11 +1,10 @@
 package com.sparta.crunchy_crew.logger;
 
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.io.IOException;
+import java.util.logging.*;
 
 public class CrunchyLogger {
+
     public static void configure() {
         Logger rootLogger = Logger.getLogger("");
 
@@ -14,12 +13,17 @@ public class CrunchyLogger {
         }
 
         try {
-            FileHandler fileHandler = new FileHandler("src/main/resources/app.log");
-            fileHandler.setLevel(Level.ALL);
-            fileHandler.setFormatter(new SimpleFormatter());
-            rootLogger.addHandler(fileHandler);
+            setupLog("src/main/resources/warning.log", Level.WARNING, rootLogger);
+            setupLog("src/main/resources/detailed.log", Level.ALL, rootLogger);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void setupLog(String pattern, Level all, Logger rootLogger) throws IOException {
+        FileHandler logHandler = new FileHandler(pattern);
+        logHandler.setLevel(all);
+        logHandler.setFormatter(new CrunchyFormatter());
+        rootLogger.addHandler(logHandler);
     }
 }

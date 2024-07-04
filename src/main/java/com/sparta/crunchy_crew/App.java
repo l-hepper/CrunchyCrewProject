@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String[] args) {
         CrunchyLogger.configure();
-        //CsvReader.readCsvFile();
+        CsvReader.readCsvFile(null);
         DatabaseConnection.getInstance().getConnection();
 
         UserInterface userInterface = new UserInterface();
